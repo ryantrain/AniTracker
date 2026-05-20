@@ -35,6 +35,7 @@ header{
     margin-right: 12px;
     cursor: pointer;
     font-family: "anurati";
+    z-index: 1;
 }
 
 .credential-button{
@@ -103,7 +104,7 @@ header img{
 
 .search-bar input{
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     min-width: 0;
     border: none;
@@ -112,7 +113,7 @@ header img{
     border-radius: inherit;
     color: white;
     font: inherit;
-    background: transparent;
+    background: #18181a;
     padding-left: 0.35rem;
 }   
 
@@ -134,7 +135,7 @@ header img{
 .search-bar-dropdown {
     position: absolute;
     left: 0;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     box-sizing: border-box;
     max-height: 0;
@@ -166,12 +167,12 @@ header img{
     inset: 0;
     background-color: rgba(0,0,0, 0);
     opacity: 0;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
     transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 
-.search-bar:focus-within .search-bar-backdrop {
+body.search-active .search-bar-backdrop {
     background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(2px);
     opacity: 1;
@@ -188,6 +189,7 @@ header img{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: block;
 }
 
 .search-bar:focus-within .search-bar-dropdown-item {

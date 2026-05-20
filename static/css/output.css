@@ -1,4 +1,5 @@
 /*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */
+@layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -162,6 +163,10 @@
   .static {
     position: static;
   }
+  .blur {
+    --tw-blur: blur(8px);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
 }
 @font-face {
   font-family: "anurati";
@@ -195,6 +200,7 @@ header {
   margin-right: 12px;
   cursor: pointer;
   font-family: "anurati";
+  z-index: 1;
 }
 .credential-button {
   background-color: darkslategray;
@@ -257,7 +263,7 @@ header img {
 }
 .search-bar input {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   min-width: 0;
   border: none;
@@ -266,7 +272,7 @@ header img {
   border-radius: inherit;
   color: white;
   font: inherit;
-  background: transparent;
+  background: #18181a;
   padding-left: 0.35rem;
 }
 .search-bar input::placeholder {
@@ -284,7 +290,7 @@ header img {
 .search-bar-dropdown {
   position: absolute;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   box-sizing: border-box;
   max-height: 0;
@@ -314,11 +320,11 @@ header img {
   inset: 0;
   background-color: rgba(0,0,0, 0);
   opacity: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   transition: opacity 0.2s ease, background-color 0.2s ease;
 }
-.search-bar:focus-within .search-bar-backdrop {
+body.search-active .search-bar-backdrop {
   background-color: rgba(0,0,0, 0.5);
   backdrop-filter: blur(2px);
   opacity: 1;
@@ -334,6 +340,7 @@ header img {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  display: block;
 }
 .search-bar:focus-within .search-bar-dropdown-item {
   transform: translateY(0);
@@ -393,4 +400,76 @@ p {
 }
 footer {
   margin-top: auto;
+}
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
+    }
+  }
 }
