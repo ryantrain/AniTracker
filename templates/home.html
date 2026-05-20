@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <script src="{{ url_for('static', filename='./js/home.js') }} " defer ></script>
+    <title>
+        AniTracker
+    </title>
+</head>
+
+<header>
+    <div class="interactive-box">
+        <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+    </div>
+
+    <div class="interactive-box">
+        <a href="/">ANITRACKER</a>
+    </div>
+
+    <div class="search-bar">
+        <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
+        <div class="search-bar-backdrop"></div>
+        <div class="search-bar-dropdown">
+            <div class="search-bar-dropdown-item">Item ssssssssssssssssssssssssssssssss1</div>
+            <div class="search-bar-dropdown-item">Item 2</div>
+            <div class="search-bar-dropdown-item">Item 3</div>
+            <div class="search-bar-dropdown-item">Item 1</div>
+            <div class="search-bar-dropdown-item">Item 2</div>
+            <div class="search-bar-dropdown-item">Item 3</div>
+            <div class="search-bar-dropdown-item">Item 1</div>
+            <div class="search-bar-dropdown-item">Item 2</div>
+            <div class="search-bar-dropdown-item">Item 3</div>
+            <div class="search-bar-dropdown-item">Item 1</div>
+            <div class="search-bar-dropdown-item">Item 2</div>
+            <div class="search-bar-dropdown-item">Item 3</div>
+        </div>
+        
+    </div>
+
+    <a href="/login/" class="credential-button">LOGIN</a>
+
+    <a href="/register/" class="credential-button">REGISTER</a>
+
+</header>
+
+<body>
+    <div class="banner">
+    </div>
+    
+    <div class="anime-list">
+        {% for thumbnail, anime in zip(anime_thumbnails, anime_list) %}
+        <div class="anime-card">
+
+            <div class="anime-thumbnail">
+                    <img src= "{{ thumbnail }}" alt="Anime Thumbnail"/>
+            </div>
+
+            <div class="anime-metadata">
+                {{ anime }}  
+            </div>
+        </div>
+        {% endfor %}    
+    </div>
+</body>
+
+<footer>
+    <p>&copy; 2026 AniTracker. All rights reserved.</p>
+</footer>
+
+</html>

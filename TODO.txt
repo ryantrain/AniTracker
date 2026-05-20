@@ -1,0 +1,19 @@
+ALL information will be cleared upon site shutdown (minus possibly user information (username, PW))
+
+- Create nav bar that goes down the left
+    - Will contain list of bookmarked/favourites
+    - Browsing history (only for what the user has clicked on maybe)
+    - User settings
+        - Change name
+        - Change password
+        - Set profile pictures with flask (maybe but lazy)
+- Create users (stores users and passwords)
+    - Change icons and behaviourability when not logged in
+- Create a framework for anime information where:
+    - Upon request, the user's click will generate an html with the anime's information pulled from the API
+    - Fill out the page with the anime's information
+    - Display it in a good manner
+- Improve the home page (show first x animes in a repeated cycle, from left to right)
+- Add a search history clear button (localStorage.clear())
+
+NEXT GOAL: create proper nav bar on the left
