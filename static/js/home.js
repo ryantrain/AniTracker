@@ -25,36 +25,37 @@ document.querySelector(".search-bar-backdrop").addEventListener("pointerdown", f
 // Populate dropdown from localStorage
 function renderStorageDropdown() {
     storageDisplay.innerHTML = '';
-    for (let i = localStorage.length; i > 0; i--) {
-        const key = localStorage.key(i);
-        const value = localStorage.getItem("userInput"+i);
-        if (value && value.trim() !== ''){
-            const div = document.createElement('a');
-            div.classList.add('search-bar-dropdown-item');
-            div.setAttribute('href', './search/' + value + '/');
-            div.textContent = value;
-            div.addEventListener('click', () => {
-                storageDisplay.innerHTML = '';  
-                window.location.href = "/search/" + value + "/";
-            });
-            storageDisplay[0].appendChild(div);
+
+    if (localStorage.length === 0) {
+        const div = document.createElement('a');
+        div.innerHTML = 'No recent searches';
+        div.classList.add('search-bar-dropdown-item-empty');
+        storageDisplay[0].appendChild(div);
+    } else {
+        if (document.getElementsByClassName("search-bar-dropdown-item-empty").length > 0) {
+            document.getElementsByClassName("search-bar-dropdown-item-empty")[0].remove();
+        }
+        for (let i = localStorage.length; i > 0; i--) {
+            const key = localStorage.key(i);
+            const value = localStorage.getItem("userInput"+i);
+            if (value && value.trim() !== ''){
+                const div = document.createElement('a');
+                div.classList.add('search-bar-dropdown-item');
+                div.setAttribute('href', './search/' + value + '/');
+                div.textContent = value;
+                div.addEventListener('click', () => {
+                    storageDisplay.innerHTML = '';  
+                    window.location.href = "/search/" + value + "/";
+                });
+                storageDisplay[0].appendChild(div);
+            }
+
         }
 
     }
-
 }
 
 renderStorageDropdown();
-
-// On enter, save to localStorage and redirect
-myInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        const userInput = myInput.value;
-        localStorage.setItem("userInput" + (localStorage.length + 1), userInput);
-        window.location.href = "/search/" + userInput + "/";
-    }
-});
 
 // show the global backdrop while the input is focused
 myInput.addEventListener('focus', function() {

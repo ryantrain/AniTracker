@@ -200,6 +200,24 @@ body.search-active .search-bar-backdrop {
     background-color: rgba(129, 54, 234, 0.1);
 }
 
+.search-bar-dropdown-item-empty {
+    padding: 10px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    cursor: default;
+}
+
+.search-bar:focus-within .search-bar-dropdown-item-empty {
+    transform: translateY(0);
+}
+
 body{
     background-color: black;
     background-size: cover;
