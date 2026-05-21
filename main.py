@@ -1,13 +1,57 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 import api
 from flask_caching import Cache
+from flask_login import LoginManager, UserMixin, current_user, login_required, login_user
+import secrets
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = secrets.token_hex(32)  # Generate a random secret key for session management
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
 
 cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DIR': 'cache'})
 
-@app.route('/login/')
+##########################################################
+# Database
+##########################################################
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+################################################
+# Routes
+################################################
+
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.check_password(password):
+            login_user(user)
+            return redirect(url_for('home'))
+        
     return render_template('login.html')
 
 @app.route('/')
@@ -22,6 +66,9 @@ def home():
 @app.route('/register/')
 def register():
     return render_template('register.html')
+
+with app.app_context():
+    db.create_all()
 
 def get_anime_data():
     anime = api.get_anime_list(0)

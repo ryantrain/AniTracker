@@ -166,6 +166,11 @@ body.nav-active .search-bar, .search-bar-dropdown {
     cursor: pointer;
 }
 
+.credential-button:last-of-type{
+    margin-right: 8px;
+    margin-left: 18px;
+}
+
 .credential-button:hover{
     border-color: white;
     border-width: 2px;
