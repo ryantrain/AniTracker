@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/outputlogin.css') }}">
+    <script src="{{ url_for('static', filename='./js/login.js') }} " type="module" ></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='./images/favicon.ico') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <title>Login - AniTracker</title>
+</head>
+
+    <header>
+        <a href="/">ANITRACKER</a>
+    </header>
+
+    <a class="sign-in-text">Sign in</a>
+
+    <div class="login-container">
+        <input id="username" type="text" name="username" placeholder="Username"/>
+        <input id="password" type="password" name="password" placeholder="Password"/>
+    </div>
+
+    <div class="action-row">
+        <div class="action-button" id="login-button">Login</div>
+        <a href="/register/" class="action-button">Register</a>
+    </div>
+
+</body>
+
+</html>

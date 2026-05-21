@@ -24,7 +24,7 @@ def register():
     return render_template('register.html')
 
 def get_anime_data():
-    anime = api.get_anime_list(20)
+    anime = api.get_anime_list(0)
     return {
         'anime_list': [a['data']['title'] for a in anime if a is not None],
         'anime_thumbnails': [a['data']['images']['jpg']['image_url'] for a in anime if a is not None],

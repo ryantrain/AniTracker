@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i ./static/css/home.css -o ./static/css/output.css --watch"
+    "dev-main": "npx @tailwindcss/cli -i ./static/css/home.css -o ./static/css/outputhome.css --watch",
+    "dev-login": "npx @tailwindcss/cli -i ./static/css/login.css -o ./static/css/outputlogin.css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "papaparse": "^5.5.3",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
