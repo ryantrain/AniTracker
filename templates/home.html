@@ -55,22 +55,25 @@
     <div class="banner">
     </div>
     
-    <div class="anime-list">
-        {% for thumbnail, anime in zip(anime_thumbnails, anime_list) %}
-        <div class="anime-card">
+    <div class="body-gradient">
+        <div class="anime-list">
+            {% for thumbnail, anime in zip(anime_thumbnails, anime_list) %}
+            <div class="anime-card">
 
-            <div class="anime-thumbnail">
-                <a href="./search/{{ anime }}/">
-                    <img src= "{{ thumbnail }}" alt="Anime Thumbnail" href="./search/{{ anime }}/"/>
-                </a>
-            </div>
+                <div class="anime-thumbnail">
+                    <a href="./search/{{ anime }}/">
+                        <img src= "{{ thumbnail }}" alt="Anime Thumbnail" href="./search/{{ anime }}/"/>
+                    </a>
+                </div>
 
-            <div class="anime-metadata">
-                {{ anime }}  
+                <div class="anime-metadata">
+                    {{ anime }}  
+                </div>
             </div>
+            {% endfor %}    
         </div>
-        {% endfor %}    
     </div>
+    
 </body>
 
 <footer>

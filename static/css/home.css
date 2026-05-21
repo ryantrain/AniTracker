@@ -13,7 +13,7 @@
 header{
     background-color: black;
     color: white;
-    padding: 20px;
+    padding: 4px;
     width: 100%;
     text-align: left;
     fill: black;
@@ -22,7 +22,7 @@ header{
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 100;
 }
@@ -66,9 +66,13 @@ header{
     display: inline-block;
     height: auto;
     width: auto;
-    padding: 0px 5px;
+    padding-left: 5px;
     top: 0;
     left: 0;
+}
+
+header > .nav-toggle-label{
+    margin-left: 16px;
 }
 
 .nav{
@@ -187,6 +191,7 @@ header img{
     font-size: large;
     background-size: cover;
     position: relative;
+    z-index: 0;
 }
 
 .search-bar{
@@ -336,15 +341,30 @@ p{
     color: white;
 }
 
+.body-gradient {
+    position: sticky;
+    margin-top: -1000px; /* pull it up to overlap the bottom half of banner */
+    padding-top: 750px; /* push content down so gradient has room */
+    background: linear-gradient(transparent, black 50%);
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+}
+
 .anime-list{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 14px;
     color: white;
-    position: absolute;
-    top: 50%;
-    grid-auto-flow: column;
+    position: relative;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100% - 2rem, 1500px);
+    grid-auto-flow: row;
     align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
 .anime-card {
