@@ -59,16 +59,41 @@ def login():
     return render_template('login.html')
 
 @app.route('/')
-@cache.cached(timeout=300)
 def home():
     anime_data = get_anime_data()
     anime_names = anime_data['anime_list']
     anime_thumbnails = anime_data['anime_thumbnails']
-    return render_template('home.html', anime_list=anime_names, anime_thumbnails=anime_thumbnails, zip=zip, \
-                           storage=None)
+    template_name = 'home_logged_in.html' if current_user.is_authenticated else 'home.html'
+    return render_template(
+        template_name,
+        anime_list=anime_names,
+        anime_thumbnails=anime_thumbnails,
+        zip=zip,
+        storage=None,
+    )
 
-@app.route('/register/')
+@app.route('/register/', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if request.method == 'POST':
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
+
+        if username == '' or password == '':
+            flash('Please fill out all fields.', 'error-message')
+            return redirect(url_for('register'))
+        else:
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                flash('Username already exists. Please choose a different one.', 'error-message')
+            else:
+                new_user = User(username=username)
+                new_user.set_password(password)
+                db.session.add(new_user)
+                db.session.commit()
+                flash('Registration successful! You can now log in.', 'success-message')
+
     return render_template('register.html')
 
 with app.app_context():

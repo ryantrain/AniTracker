@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/outputhomeloggedin.css') }}">
+    <script src="{{ url_for('static', filename='./js/home_logged_in.js') }} " defer ></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='./images/favicon.ico') }}">
+    <title>
+        AniTracker
+    </title>
+</head>
+
+<header>
+
+    <div class="search-bar-backdrop"></div>
+
+    <input type='checkbox' id='nav-toggle' class='nav-toggle'>
+
+    <div class="nav-backdrop"></div>
+
+    <label for='nav-toggle' class='nav-toggle-label'>
+        <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+    </label>
+
+    <nav class="nav">
+        <label for='nav-toggle' class='nav-toggle-label'>
+            <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+        </label>
+
+        <div class="nav-logo">
+            <a href="/">ANITRACKER</a>
+        </div>
+
+        <a class="nav-item" href="/">Home</a>
+    </nav>
+
+    <div class="interactive-box">
+        <a href="/">ANITRACKER</a>
+    </div>
+
+    <div class="search-bar">
+        <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
+
+        <div class="search-bar-dropdown"></div>
+    </div>
+
+    <img src=" {{ url_for ('static', filename='./images/person-icon.jpg') }} " alt="Profile Icon" class="profile-icon"/>
+
+</header>
+
+<body>
+    <div class="banner">
+    </div>
+    
+    <div class="body-gradient">
+        <div class="anime-list">
+            {% for thumbnail, anime in zip(anime_thumbnails, anime_list) %}
+            <div class="anime-card">
+
+                <div class="anime-thumbnail">
+                    <a href="./search/{{ anime }}/">
+                        <img src= "{{ thumbnail }}" alt="Anime Thumbnail" href="./search/{{ anime }}/"/>
+                    </a>
+                </div>
+
+                <div class="anime-metadata">
+                    {{ anime }}  
+                </div>
+            </div>
+            {% endfor %}    
+        </div>
+    </div>
+    
+</body>
+
+<footer>
+    <p>&copy; 2026 AniTracker. All rights reserved.</p>
+</footer>
+
+</html>

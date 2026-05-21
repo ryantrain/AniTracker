@@ -17,6 +17,7 @@ ALL information will be cleared upon site shutdown (minus possibly user informat
 - Add a search history clear button (localStorage.clear())
 - Add icons for search bar (magnifying glass) and a history symbol beside every search bar item (history symbol)
 - Create a logged in user page(s)
+- NEXT, create user system and register page (copy from login page)
 
 NEXT GOAL: create proper nav bar on the left
 

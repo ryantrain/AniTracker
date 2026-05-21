@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@font-face{
+    font-family:"anurati";
+    src: url('../fonts/Anurati-Regular.otf') format('OpenType');
+}
+
+header{
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-top: 20px;
+    width: 100%;
+    text-align: left;
+    fill: black;
+    font-size: 36px;
+    font-family: "anurati"; 
+    top: 0;
+    position: fixed;
+}   
+
+body {
+    background-color: black;
+    background-size: cover;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.sign-in-text{
+    width: 100%;
+    text-align: center;
+    scrollbar-width: thin;
+    color: white;
+    display: block;
+    font-size: 30px;
+    margin: 0;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.8);
+    border-color: transparent;
+    border-width: 2px;
+    border-radius: 12px;
+    padding-bottom: 20px;
+}
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+}
+
+.login-container input {
+    width: 280px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #18181a;
+    color: white;
+    font-size: 18px;
+    outline: none;
+}
+
+.login-container input:focus {
+    border-color: white;
+}
+
+.login-container input::placeholder{
+    color: gray;
+    transition: color 0.2s ease;
+}
+
+.login-container input:focus::placeholder{
+    color: transparent;
+}
+
+.action-button {
+    width: 280px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: inline-block;
+    background: #18181a;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: -8px;
+}
+
+.error-message {
+    color: red;
+    font-size: 16px;
+}
+
+.success-message {
+    color: green;
+    font-size: 16px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/outputregister.css') }}">
+    <script src="{{ url_for('static', filename='./js/register.js') }} " type="module" ></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='./images/favicon.ico') }}">
+    <title>Login - AniTracker</title>
+</head>
+
+    <header>
+        <a href="/">ANITRACKER</a>
+    </header>
+
+    <a class="sign-in-text">Register</a>
+
+    <form action="{{ url_for('register') }}" method="POST">
+        <div class="login-container">
+            <input id="username" type="text" name="username" placeholder="Username"/>
+            <input id="password" type="password" name="password" placeholder="Password"/>
+        </div>
+
+
+        <div class="action-row">
+            <button type="submit" class="action-button" id="login-button">Register</button>
+        </div>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <p class="{{ messages[messages | length - 1][0] }}">{{ messages[messages | length - 1][1] }}</p>
+        {% endif %}
+    {% endwith %}
+
+</body>
+
+</html>
