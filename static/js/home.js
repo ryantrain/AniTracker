@@ -1,6 +1,8 @@
 const myInput = document.getElementById("search-query");
 const storageDisplay = document.getElementsByClassName("search-bar-dropdown");
 const body = document.body;
+const navToggle = document.getElementById('nav-toggle');
+const navBackdrop = document.querySelector('.nav-backdrop');
 
 myInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter"){
@@ -17,10 +19,10 @@ myInput.addEventListener("keydown", function(event) {
 
 document.querySelector(".search-bar-backdrop").addEventListener("pointerdown", function(event) {
     event.preventDefault();
-    document.querySelector('#search-query').blur();
+    myInput.value = '';
+    myInput.blur();
     body.classList.remove('search-active');
 });
-
 
 // Populate dropdown from localStorage
 function renderStorageDropdown() {
@@ -59,10 +61,35 @@ renderStorageDropdown();
 
 // show the global backdrop while the input is focused
 myInput.addEventListener('focus', function() {
-    body.classList.add('search-active');
+    document.body.style.overflow = 'hidden';
+    if (!navToggle.checked){
+        body.classList.add('search-active');
+    }
+    
 });
 
+navToggle.addEventListener('change', function(){
+    if (navToggle.checked) {
+        body.classList.add('nav-active');
+    } else {
+        body.classList.remove('nav-active');
+    }
+})
+
+if (navBackdrop) {
+    navBackdrop.addEventListener('pointerdown', function(event) {
+        event.preventDefault();
+        navToggle.checked = false;
+        body.classList.remove('nav-active');
+    });
+}
+
 myInput.addEventListener('blur', function() {
-    // small timeout to allow clicks inside dropdown to register
-    setTimeout(() => body.classList.remove('search-active'), 0);
+    document.body.style.overflow = 'auto';
+
+    setTimeout(() => {
+        if (document.activeElement !== myInput) {
+            body.classList.remove('search-active');
+        }
+    }, 0);
 });

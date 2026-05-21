@@ -15,5 +15,10 @@ ALL information will be cleared upon site shutdown (minus possibly user informat
     - Display it in a good manner
 - Improve the home page (show first x animes in a repeated cycle, from left to right)
 - Add a search history clear button (localStorage.clear())
+- Add icons for search bar (magnifying glass) and a history symbol beside every search bar item (history symbol)
+
 
 NEXT GOAL: create proper nav bar on the left
+
+FINISHED:
+    - Search bar
