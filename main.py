@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, flash
 import api
 from flask_caching import Cache
 from flask_login import LoginManager, UserMixin, current_user, login_required, login_user
@@ -44,14 +44,18 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
         user = User.query.filter_by(username=username).first()
 
         if user and user.check_password(password):
             login_user(user)
             return redirect(url_for('home'))
         
+        else:
+            flash('Invalid username or password. Please try again.')
+            return redirect(url_for('login'))
+
     return render_template('login.html')
 
 @app.route('/')

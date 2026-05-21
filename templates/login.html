@@ -15,21 +15,28 @@
 
     <a class="sign-in-text">Sign in</a>
 
-    <div class="login-container">
-        <input id="username" type="text" name="username" placeholder="Username"/>
-        <input id="password" type="password" name="password" placeholder="Password"/>
-    </div>
+    <form action="{{ url_for('login') }}" method="POST">
+        <div class="login-container">
+            <input id="username" type="text" name="username" placeholder="Username"/>
+            <input id="password" type="password" name="password" placeholder="Password"/>
+        </div>
 
-    <div class="action-row">
-        <form method="POST">
 
-            <div class="action-button" id="login-button">Login</div>
-            <input type="hidden" name="password" value="">
+        <div class="action-row">
+            <button type="submit" class="action-button" id="login-button">Login</button>
+            <a href="/register/" class="action-button">Register</a>
+        </div>
+    </form>
 
-        </form> 
-
-        <a href="/register/" class="action-button">Register</a>
-    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
 </body>
 
