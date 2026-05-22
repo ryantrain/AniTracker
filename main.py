@@ -164,6 +164,10 @@ def search(query=None):
             zip=zip,
         )
 
+@app.route('anime/<string:title>/')
+def anime(title):
+    return render_template('anime.html', title=title)
+
 with app.app_context():
     db.create_all()
 

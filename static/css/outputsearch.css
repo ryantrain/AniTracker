@@ -569,6 +569,10 @@ footer {
   background-color: rgb(50, 32, 32);
   padding: 10px;
   border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+.search-results-item:hover {
+  transform: translateY(-3px) translateX(-3px);
 }
 .search-results-item img {
   border-color: white;
@@ -576,6 +580,7 @@ footer {
 }
 .search-results-item:hover p {
   color: rgb(253, 137, 137);
+  transform: none;
 }
 .pagination {
   position: static;
