@@ -16,10 +16,10 @@ def get_anime_list(count: int):
         id += 1
     return results
 
-def search_anime_by_title(title: str):
-    response = requests.get(f"https://api.jikan.moe/v4/anime?q={title}")
+def search_anime_by_title(title: str, page_number: int = 1):
+    response = requests.get(f"https://api.jikan.moe/v4/anime?q={title}&page={page_number}")
     if response.status_code == 200:
         data = response.json()
         if 'data' in data:
-            return data['data']
+            return data
     return []  # If there is no data or if the request fails, return an empty list

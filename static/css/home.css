@@ -147,7 +147,7 @@ body.nav-active .search-bar, .search-bar-dropdown {
 }
 
 .credential-button{
-    background-color: darkslategray;
+    background-color: #4facfe6e;
     color: white;
     padding: 5px 10px;
     width: auto;
@@ -164,6 +164,7 @@ body.nav-active .search-bar, .search-bar-dropdown {
     transition: all 0.1s ease-in-out;
     border: 2px solid transparent;
     cursor: pointer;
+    font-family: "poppins";
 }
 
 .credential-button:last-of-type{
@@ -299,11 +300,20 @@ body.search-active .search-bar-backdrop {
     transform: translateY(0);
     transition: transform 0.2s ease, background-color 0.3s ease;
     color: white;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    display: block;
+    justify-content: flex-start;
+}
+
+.search-bar-dropdown-item svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
 }
 
 .search-bar:focus-within .search-bar-dropdown-item {

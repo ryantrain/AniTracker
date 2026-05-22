@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/outputsearch.css') }}">
+    <script src="{{ url_for('static', filename='./js/search.js') }} " defer ></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='./images/favicon.ico') }}">
+    <title>
+        Search Results - AniTracker
+    </title>
+
+<header>
+
+    <div class="search-bar-backdrop"></div>
+
+    <input type='checkbox' id='nav-toggle' class='nav-toggle'>
+
+    <div class="nav-backdrop"></div>
+
+    <div class="profile-icon-backdrop"></div>
+
+    <label for='nav-toggle' class='nav-toggle-label'>
+        <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+    </label>
+
+    <nav class="nav">
+        <label for='nav-toggle' class='nav-toggle-label'>
+            <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+        </label>
+
+        <div class="nav-logo">
+            <a href="/">ANITRACKER</a>
+        </div>
+
+        <a class="nav-item" href="/">Home</a>
+    </nav>
+
+    <div class="interactive-box">
+        <a href="/">ANITRACKER</a>
+    </div>
+
+    <form method="GET" action="{{ url_for ('search')}}" class="search-bar">
+        <div>
+            <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
+
+            <div class="search-bar-dropdown"></div>
+        </div>
+    </form>
+    
+    {% if not authenticated %}
+
+        <a href="/login/" class="credential-button">LOGIN</a>
+
+        <a href="/register/" class="credential-button">REGISTER</a>
+
+    {% else %}
+
+        <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
+
+        <div class="profile-menu-dropdown">
+            <a href="/profile/{{ current_username }}/" class="profile-menu-item">Profile</a>
+
+            <form method="POST" action="{{ url_for('search', query=query, page=pagination_info['current_page']) }}">
+                <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
+            </form>
+
+        </div>
+
+    {% endif %}
+</header>
+
+<body>
+
+    <div class="search-results">
+        {% if anime_info %}
+            <div class="search-results-items">
+            {% for data, title in zip(anime_info, anime_titles) %}
+                <div class="search-results-item">
+                    <a href="/anime/{{ title }}/">
+                        <img src="{{ data['images']['jpg']['image_url'] }}"/>
+                    </a>
+                    <p>{{ data['title'] }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+
+    <div class="pagination">
+        {% if pagination_info %}
+            <div class="pagination-controls">
+                
+                {% if pagination_info['last_visible_page'] > 1 and pagination_info['current_page'] > 1 %}
+                    <a href="{{ url_for('search', query=query, page=pagination_info['current_page'] - 1) }}" >Previous</a>
+                    <span>Page {{ pagination_info['current_page'] }} of {{ pagination_info['last_visible_page'] }}</span>
+                    <a href="{{ url_for('search', query=query, page=pagination_info['current_page'] + 1) }}" >Next</a>
+                
+                {% elif pagination_info['last_visible_page'] == 1 and pagination_info['current_page'] == 1 %}
+                    <span>Page {{ pagination_info['current_page'] }} of {{ pagination_info['last_visible_page'] }}</span>
+                
+                {% elif pagination_info['current_page'] == 1 %}
+                    <span>Page {{ pagination_info['current_page'] }} of {{ pagination_info['last_visible_page'] }}</span>
+                    <a href="{{ url_for('search', query=query, page=pagination_info['current_page'] + 1) }}" >Next</a>
+                
+                {% elif pagination_info['current_page'] == pagination_info['last_visible_page'] %}
+                    <a href="{{ url_for('search', query=query, page=pagination_info['current_page'] - 1) }}" >Previous</a>
+                    <span>Page {{ pagination_info['current_page'] }} of {{ pagination_info['last_visible_page'] }}</span>
+                
+                {% endif %}
+
+                <div class="pagination-jump">
+                    <form method="GET" action="{{ url_for('search', query=query) }}">
+                        <input type="number" name="page" min="1" max="{{ pagination_info['last_visible_page'] }}" placeholder="Jump"/>
+                        <button type="submit">Go</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

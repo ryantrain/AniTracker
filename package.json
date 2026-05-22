@@ -7,7 +7,9 @@
     "dev-main": "npx @tailwindcss/cli -i ./static/css/home.css -o ./static/css/outputhome.css --watch",
     "dev-login": "npx @tailwindcss/cli -i ./static/css/login.css -o ./static/css/outputlogin.css --watch",
     "dev-register": "npx @tailwindcss/cli -i ./static/css/register.css -o ./static/css/outputregister.css --watch",
-    "dev-home-logged-in": "npx @tailwindcss/cli -i ./static/css/home_logged_in.css -o ./static/css/outputhomeloggedin.css --watch"
+    "dev-home-logged-in": "npx @tailwindcss/cli -i ./static/css/home_logged_in.css -o ./static/css/outputhomeloggedin.css --watch",
+    "dev-profile": "npx @tailwindcss/cli -i ./static/css/profile.css -o ./static/css/outputprofile.css --watch",
+    "dev-search": "npx @tailwindcss/cli -i ./static/css/search.css -o ./static/css/outputsearch.css --watch"
   },
   "keywords": [],
   "author": "",

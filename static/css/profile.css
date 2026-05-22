@@ -152,23 +152,6 @@ header img{
     object-fit: cover;
 }
 
-.banner{
-    background-image: url('../images/9336992.webp');
-    background-repeat: no-repeat;
-    background-position-x: center;
-    text-align: center;
-    height: 100vh;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color : black;
-    mask-image: radial-gradient(black 50%, transparent 100%);
-    font-size: large;
-    background-size: cover;
-    position: relative;
-    z-index: 0;
-}
-
 .search-bar{
     background-color: #18181a;
     border-color: transparent;
@@ -397,70 +380,41 @@ p{
     color: white;
 }
 
-.body-gradient {
-    position: sticky;
-    margin-top: -1000px; /* pull it up to overlap the bottom half of banner */
-    padding-top: 750px; /* push content down so gradient has room */
-    background: linear-gradient(transparent, black 50%);
-    z-index: 1;
-    width: 100%;
-    min-height: 100vh;
-}
-
-.anime-list{
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 14px;
-    color: white;
-    position: relative;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100% - 2rem, 1500px);
-    grid-auto-flow: row;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
-
-.anime-card {
-    background-color: black; 
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    overflow: hidden;
-    border-radius: 10px;
-    transition: transform 0.2s ease;   
-    cursor: pointer;
-    width: 100%;
-}
-
-.anime-card:hover { 
-    transform: translateY(-5px); 
-    color: white;
-}
-
-.anime-thumbnail {
-    aspect-ratio: 45/64;
-    border-radius: 10px;
-    overflow: hidden;   
-    width: 100%;
-    height: auto;
-}
-
-.anime-thumbnail img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.anime-metadata {
-    padding: 5px;
-    min-width: 0;
-    overflow-wrap: anywhere;
-    color: white;
-}
-
 footer{
     margin-top: auto;
+}
+
+.rect {
+    position: fixed;
+    width: 100vw;
+    background-color: rgb(36, 36, 36);
+    height: 30vh;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.profile-picture {
+    position: fixed;
+    top: 15vh;
+    left: 20vh;
+    z-index: 1;
+    border-width: 1px;
+    border-color: white ;
+    border-radius: 50%;
+    width: 25vh;
+}
+
+.profile-name {
+    position: fixed;
+    top: 19vh;
+    left: 48vh;
+    z-index: 1;
+    color: white;
+    font-size: 72px;
+    font-weight: bold;
+}
+
+.search-form {
+    margin-left: auto;
 }
