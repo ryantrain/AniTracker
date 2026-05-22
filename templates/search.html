@@ -76,12 +76,11 @@
         {% if anime_info %}
             <div class="search-results-items">
             {% for data, title in zip(anime_info, anime_titles) %}
-                <div class="search-results-item">
-                    <a href="/anime/{{ title }}/">
-                        <img src="{{ data['images']['jpg']['image_url'] }}"/>
-                    </a>
-                    <p>{{ data['title'] }}</p>
-                </div>
+                <a href="/anime/{{ title }}/" class="search-results-item">
+                    <img src="{{ data['images']['jpg']['image_url'] }}"/>
+                    <p class="search-results-item">{{ data['title'] }}</p>
+                </a>    
+                
             {% endfor %}
         {% else %}
             <p>No results found.</p>

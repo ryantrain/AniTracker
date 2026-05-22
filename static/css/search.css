@@ -432,6 +432,8 @@ footer{
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
     overflow: visible;
+    align-content: center;
+    background-color: black;
 }
 
 .search-results-item {
@@ -440,6 +442,20 @@ footer{
     text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(50, 32, 32);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.search-results-item img {
+    border-color: white;
+    border-width: 1px;
+}
+
+.search-results-item:hover p{
+    color:rgb(253, 137, 137)
 }
 
 .pagination {
@@ -451,6 +467,13 @@ footer{
 
 .pagination-controls {
     color: white;
-    display: inline-flex;
+    display: inline-block;
     gap: 12px;
+    padding: 0px 8px;
+}
+
+.pagination-jump {
+    color: white;
+    display: relative;
+    margin-top: 6px;
 }
