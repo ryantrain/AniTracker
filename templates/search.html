@@ -50,7 +50,7 @@
     
     {% if not authenticated %}
 
-        <a href="/login/" class="credential-button">LOGIN</a>
+        <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
 
         <a href="/register/" class="credential-button">REGISTER</a>
 
@@ -76,11 +76,12 @@
         {% if anime_info %}
             <div class="search-results-items">
             {% for data, title in zip(anime_info, anime_titles) %}
-                <a href="/anime/{{ title }}/" class="search-results-item">
-                    <img src="{{ data['images']['jpg']['image_url'] }}"/>
-                    <p class="search-results-item">{{ data['title'] }}</p>
-                </a>    
-                
+                <form action="{{ url_for('anime', title=title, id=data['mal_id']) }}" method="GET">
+                    <a href="/anime/{{ title }}/{{ data['mal_id'] }}/" class="search-results-item">
+                        <img src="{{ data['images']['jpg']['image_url'] }}"/>
+                        <p class="search-results-item">{{ data['title'] }}</p>
+                    </a>    
+                </form>
             {% endfor %}
         {% else %}
             <p>No results found.</p>

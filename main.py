@@ -4,6 +4,7 @@ from flask_caching import Cache
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 import secrets
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.mutable import MutableList
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -28,6 +29,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     date_joined = db.Column(db.DateTime, default=datetime.now().date())
     profile_picture = db.Column(db.String(256), nullable=True, default='default-icon.png')
+    bookmarks = db.Column(MutableList.as_mutable(db.JSON), nullable=False, default=list)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password, salt_length=32)
@@ -40,6 +42,16 @@ class User(UserMixin, db.Model):
 
     def check_email(self, email):
         return self.email == email
+    
+    def add_bookmark(self, anime_id):
+        if anime_id not in self.bookmarks:
+            self.bookmarks.append(anime_id)
+            db.session.commit()
+    
+    def remove_bookmark(self, anime_id):
+        if anime_id in self.bookmarks:
+            self.bookmarks.remove(anime_id)
+            db.session.commit()
 
 
 @login_manager.user_loader
@@ -54,6 +66,9 @@ def load_user(user_id):
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
+
+    next_page = request.args.get('next')
+    
     if request.method == 'POST':
         username = request.form.get('username', '')
         password = request.form.get('password', '')
@@ -61,13 +76,14 @@ def login():
 
         if user and user.check_password(password):
             login_user(user)
-            return redirect(url_for('home'))
+            next_page = request.form.get('next')
+            return redirect(next_page)
         
         else:
             flash('Invalid username or password. Please try again.')
             return redirect(url_for('login'))
 
-    return render_template('login.html')
+    return render_template('login.html', next_page=next_page)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -164,9 +180,31 @@ def search(query=None):
             zip=zip,
         )
 
-@app.route('anime/<string:title>/')
-def anime(title):
-    return render_template('anime.html', title=title)
+@app.route('/anime/<string:title>/<int:id>/', methods= ['GET', 'POST'])
+def anime(title, id):
+
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if request.form.get('logout'):
+                logout_user()
+                return redirect(url_for('anime', title=title, id=id))
+            
+            if request.form.get('bookmark_action'):
+
+                if request.form.get('bookmark_action') == 'remove':
+                    current_user.remove_bookmark(id)
+                    return redirect(url_for('anime', title=title, id=id))
+                
+                elif request.form.get('bookmark_action') == 'add':
+                    current_user.add_bookmark(id)
+                    return redirect(url_for('anime', title=title, id=id))
+
+    is_bookmarked = id in current_user.bookmarks if current_user.is_authenticated else False
+    authenticated = current_user.is_authenticated
+    search_results = api.search_anime_by_id(id)
+    anime_info = search_results['data'] if 'data' in search_results else []
+    return render_template('anime.html', anime_info=anime_info, authenticated=authenticated
+                           , is_bookmarked=is_bookmarked)
 
 with app.app_context():
     db.create_all()

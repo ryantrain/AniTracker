@@ -162,86 +162,18 @@
   }
 }
 @layer utilities {
-  .collapse {
-    visibility: collapse;
-  }
   .static {
     position: static;
-  }
-  .container {
-    width: 100%;
-    @media (width >= 40rem) {
-      max-width: 40rem;
-    }
-    @media (width >= 48rem) {
-      max-width: 48rem;
-    }
-    @media (width >= 64rem) {
-      max-width: 64rem;
-    }
-    @media (width >= 80rem) {
-      max-width: 80rem;
-    }
-    @media (width >= 96rem) {
-      max-width: 96rem;
-    }
-  }
-  .flex {
-    display: flex;
   }
   .hidden {
     display: none;
   }
-  .table {
-    display: table;
-  }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
-  .shrink {
-    flex-shrink: 1;
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .transform {
-    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
-  }
   .resize {
     resize: both;
-  }
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
-  .border {
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-  }
-  .text-wrap {
-    text-wrap: wrap;
-  }
-  .underline {
-    text-decoration-line: underline;
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .blur {
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .filter {
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .backdrop-filter {
-    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-  }
-  .transition {
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 }
 @font-face {
@@ -573,75 +505,343 @@ body {
   text-align: center;
   scrollbar-width: thin;
 }
-h1 {
+.credential-button {
+  background-color: #4facfe6e;
   color: white;
+  padding: 5px 10px;
+  width: auto;
+  border-radius: 5px;
+  height: auto;
+  justify-content: right;
+  text-align: center;
+  font-size: 18px;
+  font-family: sans-serif;
+  margin-left: 20px;
+  float: right;
+  display: table-cell;
+  vertical-align: middle;
+  transition: all 0.1s ease-in-out;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: "poppins";
 }
-p {
-  color: white;
+.credential-button:last-of-type {
+  margin-right: 8px;
+  margin-left: 18px;
 }
-footer {
-  margin-top: auto;
-}
-.rect {
-  position: fixed;
-  width: 100vw;
-  background-color: rgb(36, 36, 36);
-  height: 30vh;
-  top: 0;
-  left: 0;
-  z-index: 0;
-}
-.profile-picture {
-  position: fixed;
-  top: 15vh;
-  left: 20vh;
-  z-index: 1;
-  border-width: 1px;
+.credential-button:hover {
   border-color: white;
-  border-radius: 50%;
-  width: 25vh;
-}
-.profile-name {
-  position: fixed;
-  top: 19vh;
-  left: 48vh;
-  z-index: 1;
-  color: white;
-  font-size: 72px;
-  font-weight: bold;
+  border-width: 2px;
+  transform: scale(1.01);
 }
 .search-form {
   margin-left: auto;
 }
-@property --tw-rotate-x {
-  syntax: "*";
-  inherits: false;
+.anime-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  padding-top: 15vh;
+  width: min(80vw, calc(100% - 8vw));
+  margin: 0 auto;
+  box-sizing: border-box;
 }
-@property --tw-rotate-y {
-  syntax: "*";
-  inherits: false;
+.left-column {
+  position: relative;
+  max-width: 60vw;
+  width: fit-content;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
-@property --tw-rotate-z {
-  syntax: "*";
-  inherits: false;
+.anime-thumbnail {
+  display: block;
+  width: fit-content;
+  height: auto;
+  max-width: 60vw;
+  border-width: 2px;
+  border-color: white;
+  position: relative;
+  border-radius: 12px;
 }
-@property --tw-skew-x {
-  syntax: "*";
-  inherits: false;
+.anime-thumbnail img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
 }
-@property --tw-skew-y {
-  syntax: "*";
-  inherits: false;
+.alternative-names {
+  font-family: "poppins";
+  display: block;
+  align-content: flex-start;
+  text-align: left;
+  position: relative;
+  left: 0;
+  width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
-@property --tw-border-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
+.alternative-names-title {
+  font-size: 24px;
+  color: white;
+  display: block;
+  position: relative;
+  border-bottom: 2px solid white;
+  width: 100%;
+  box-sizing: border-box;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
+.alternative-name {
+  font-size: 18px;
+  color: white;
+  position: relative;
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-wrap: normal;
+}
+.alternative-names-title + .alternative-name {
+  margin-top: 8px;
+}
+.anime-info {
+  font-family: "poppins";
+  display: block;
+  align-content: flex-start;
+  text-align: left;
+  position: relative;
+  color: white;
+  flex: auto;
+  flex-direction: column;
+}
+.info-header-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  width: 100%;
+  position: relative;
+}
+.info-header {
+  font-size: 48px;
+  border-bottom: 2px solid white;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+}
+.anime-popularity {
+  font-size: 18px;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 8px;
+  width: 100%;
+  position: relative;
+}
+.anime-popularity-score {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  border-color: white;
+  border-width: 2px;
+  min-width: 0;
+  justify-content: center;
+  flex: 1 1 220px;
+}
+.anime-popularity-score-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
+  color: black;
+  padding: 2px 6px;
+  font-size: 22px;
+  border-radius: 4px;
+  border-color: black;
+  border-width: 2px;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+.anime-popularity-score-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 0;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+.anime-popularity-rank {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: white;
+  min-width: 0;
+  flex: 1 1 220px;
+  width: 100%;
+}
+.anime-popularity-rank-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
+  color: black;
+  padding: 2px 6px;
+  font-size: 22px;
+  border-radius: 4px;
+  border-color: black;
+  border-width: 2px;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+.anime-popularity-rank-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 0;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+.anime-popularity-popularity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: white;
+  min-width: 0;
+  flex: 1 1 220px;
+  width: 100%;
+}
+.anime-popularity-popularity-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
+  color: black;
+  padding: 2px 6px;
+  font-size: 22px;
+  border-radius: 4px;
+  border-color: black;
+  border-width: 2px;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+.anime-popularity-popularity-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 0;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+.anime-popularity-members {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: white;
+  min-width: 0;
+  justify-content: center;
+  flex: 1 1 220px;
+  width: 100%;
+}
+.anime-popularity-members-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
+  color: black;
+  padding: 2px 6px;
+  font-size: 22px;
+  border-radius: 4px;
+  border-color: black;
+  border-width: 2px;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+.anime-popularity-members-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 0;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+.anime-synopsis {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+}
+.anime-synopsis-title {
+  font-size: 36px;
+  border-bottom: 2px solid white;
+  color: white;
+  margin-bottom: 8px;
+}
+.anime-synopsis-text {
+  font-size: 18px;
+  color: white;
+}
+.anime-bookmark-form {
+  display: flex;
+  align-items: flex-end;
+  width: auto;
+  box-sizing: border-box;
+  margin-top: 0;
+  flex: 0 0 auto;
+  position: absolute;
+  right: 0;
+  bottom: 1vh;
+}
+.database-querying {
+  display: flex;
+  align-items: flex-end;
+}
+.database-querying-button {
+  background-color: #4facfe6e;
+  color: white;
+  padding: 5px 10px;
+  width: auto;
+  border-radius: 5px;
+  height: auto;
+  justify-content: right;
+  text-align: center;
+  font-size: 18px;
+  font-family: "poppins";
+  margin-left: 0;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.database-querying-button:hover {
+  border-color: white;
+  border-width: 2px;
+  transform: scale(1.01);
 }
 @property --tw-blur {
   syntax: "*";
@@ -696,52 +896,9 @@ footer {
   syntax: "*";
   inherits: false;
 }
-@property --tw-backdrop-blur {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-brightness {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-contrast {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-grayscale {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-hue-rotate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-invert {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-opacity {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-saturate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-sepia {
-  syntax: "*";
-  inherits: false;
-}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
-      --tw-rotate-x: initial;
-      --tw-rotate-y: initial;
-      --tw-rotate-z: initial;
-      --tw-skew-x: initial;
-      --tw-skew-y: initial;
-      --tw-border-style: solid;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -755,15 +912,6 @@ footer {
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-backdrop-blur: initial;
-      --tw-backdrop-brightness: initial;
-      --tw-backdrop-contrast: initial;
-      --tw-backdrop-grayscale: initial;
-      --tw-backdrop-hue-rotate: initial;
-      --tw-backdrop-invert: initial;
-      --tw-backdrop-opacity: initial;
-      --tw-backdrop-saturate: initial;
-      --tw-backdrop-sepia: initial;
     }
   }
 }

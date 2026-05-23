@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/outputanime.css') }}">
+    <script src="{{ url_for('static', filename='./js/anime.js') }} " defer ></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='./images/favicon.ico') }}">
+    <title>
+        {{ anime_info['title'] if anime_info else 'Anime Details' }} - AniTracker
+    </title>
+</head>
+
+<header>
+
+    <div class="search-bar-backdrop"></div>
+
+    <input type='checkbox' id='nav-toggle' class='nav-toggle'>
+
+    <div class="nav-backdrop"></div>
+
+    <div class="profile-icon-backdrop"></div>
+
+    <label for='nav-toggle' class='nav-toggle-label'>
+        <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+    </label>
+
+    <nav class="nav">
+        <label for='nav-toggle' class='nav-toggle-label'>
+            <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
+        </label>
+
+        <div class="nav-logo">
+            <a href="/">ANITRACKER</a>
+        </div>
+
+        <a class="nav-item" href="/">Home</a>
+    </nav>
+
+    <div class="interactive-box">
+        <a href="/">ANITRACKER</a>
+    </div>
+
+    <form action="{{url_for('search')}}" method="POST" class="search-form">
+        <div class="search-bar">
+            <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
+
+            <div class="search-bar-dropdown"></div>
+        </div>
+    </form>
+
+    {% if not authenticated %}
+
+        <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
+
+        <a href="/register/" class="credential-button">REGISTER</a>
+
+    {% else %}
+
+        <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
+
+        <div class="profile-menu-dropdown">
+            <a href="/profile/{{ current_username }}/" class="profile-menu-item">Profile</a>
+
+            <form method="POST" action="{{ url_for('anime', title=anime_info['title'].replace(' ', '-'), id=anime_info['mal_id']) }}">
+                <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
+            </form>
+
+        </div>
+
+    {% endif %}
+
+</header>
+
+<body>
+    <div class="anime-content">
+
+        <div class="left-column">
+
+            <div class="anime-thumbnail">
+                <img src="{{ anime_info['images']['jpg']['large_image_url'] }}" alt="{{ anime_info['title'] }}">
+            </div>
+
+            <div class="alternative-names">
+                <a class="alternative-names-title">Alternative Names</a>
+
+                {% if anime_info['title_english'] %}
+                    <a class="alternative-name"><strong>English:</strong> {{ anime_info['title_english'] }}</a>
+                {% endif %}
+
+                {% if anime_info['title_japanese'] %}
+                    <a class="alternative-name"><strong>Japanese:</strong> {{ anime_info['title_japanese'] }}</a>
+                {% endif %}
+
+                {% if anime_info['title_synonyms'] %}
+                    <a class="alternative-name"><strong>Synonyms:</strong>
+                    {{ anime_info['title_synonyms'] | join(", ") }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="anime-info">
+
+            <div class="info-header-row">
+                <div class="info-header">
+                    <a>{{ anime_info['title'] }}</a>
+                </div>
+
+                {% if authenticated %}
+                    <form action="{{ url_for ('anime', title=anime_info['title'].replace(' ', '-'), id=anime_info['mal_id'])}}" method="POST" class="anime-bookmark-form">
+                        <div class="database-querying">
+                            {% if is_bookmarked %}
+                                <button type="submit" name="bookmark_action" value="remove" class="database-querying-button remove">Remove from List</button>
+                            {% else %}
+                                <button type="submit" name="bookmark_action" value="add" class="database-querying-button add">Add to List</button>
+                            {% endif %}
+                        </div>
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+            <div class="anime-popularity">
+                <div class="anime-popularity-score">
+                    <a class="anime-popularity-score-text">Score</a>
+                    <a class="anime-popularity-score-number">{{ anime_info['score'] }}</a>
+                </div>
+
+                <div class="anime-popularity-rank">
+                    <a class="anime-popularity-rank-text">Rank</a>
+                    <a class="anime-popularity-rank-number">#{{ anime_info['rank'] }}</a>
+                </div>
+
+                <div class="anime-popularity-popularity">
+                    <a class="anime-popularity-popularity-text">Popularity</a>
+                    <a class="anime-popularity-popularity-number">#{{ anime_info['popularity'] }}</a>
+                </div>
+
+                <div class="anime-popularity-members">
+                    <a class="anime-popularity-members-text">Members</a>
+                    <a class="anime-popularity-members-number">{{ anime_info['members'] }}</a>
+                </div>
+
+            </div>
+
+            <div class="anime-synopsis">
+                <div class="anime-synopsis-title">
+                    <a>Synopsis</a>
+                </div>
+                
+                <div class="anime-synopsis-text">
+                    <a>{{ anime_info['synopsis'] }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

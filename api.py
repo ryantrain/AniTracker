@@ -23,3 +23,11 @@ def search_anime_by_title(title: str, page_number: int = 1):
         if 'data' in data:
             return data
     return []  # If there is no data or if the request fails, return an empty list
+
+def search_anime_by_id(id: int):
+    response = requests.get(f"https://api.jikan.moe/v4/anime/{id}")
+    if response.status_code == 200:
+        data = response.json()
+        if 'data' in data:
+            return data
+    return {}
