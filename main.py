@@ -141,10 +141,10 @@ def register():
     return render_template('register.html')
 
 @app.route('/profile/<string:username>/')
-@login_required
 def profile(username):
-    current_username = current_user.username if current_user.is_authenticated else None
-    profile_picture = current_user.profile_picture if current_user.is_authenticated else None
+    user = User.query.filter_by(username=username).first_or_404()
+    current_username = user.username
+    profile_picture = user.profile_picture if user.profile_picture else None
     return render_template('profile.html', current_username=current_username, profile_picture=profile_picture)
 
 @app.route('/search/', methods=['GET', 'POST'])

@@ -18,6 +18,7 @@ ALL information will be cleared upon site shutdown (minus possibly user informat
 - Add icons for search bar (magnifying glass) and a history symbol beside every search bar item (history symbol)
 - Create a logged in user page(s)
 - NEXT, create user system and register page (copy from login page)
+- Make general profiling system (let users look at other people's profiles even when not logged in)
 
 NEXT GOAL: create proper nav bar on the left
 
