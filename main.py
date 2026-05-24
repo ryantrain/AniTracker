@@ -180,7 +180,7 @@ def search(query=None):
             zip=zip,
         )
 
-@app.route('/anime/<string:title>/<int:id>/', methods= ['GET', 'POST'])
+@app.route('/anime/<path:title>/<int:id>/', methods= ['GET', 'POST'])
 def anime(title, id):
 
     if request.method == 'POST':

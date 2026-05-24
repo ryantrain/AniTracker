@@ -847,6 +847,50 @@ body {
   border-width: 2px;
   transform: scale(1.01);
 }
+.anime-status {
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 16px;
+  gap: 16px;
+  align-items: stretch;
+}
+.anime-status-block {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
+  min-width: 0;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+.anime-status-block-type {
+  background: linear-gradient(135deg, #00aaff, #0a7bd869);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 12px 12px 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.anime-status-block-text {
+  display: block;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.03);
+  width: 100%;
+  min-height: 3.5em;
+  box-sizing: border-box;
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 @property --tw-blur {
   syntax: "*";
   inherits: false;

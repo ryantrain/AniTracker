@@ -59,7 +59,7 @@
         <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
 
         <div class="profile-menu-dropdown">
-            <a href="/profile/{{ current_username }}/" class="profile-menu-item">Profile</a>
+            <a href="/profile/{{ current_user.username }}/" class="profile-menu-item">Profile</a>
 
             <form method="POST" action="{{ url_for('anime', title=anime_info['title'].replace(' ', '-'), id=anime_info['mal_id']) }}">
                 <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
@@ -128,7 +128,13 @@
 
                 <div class="anime-popularity-rank">
                     <a class="anime-popularity-rank-text">Rank</a>
-                    <a class="anime-popularity-rank-number">#{{ anime_info['rank'] }}</a>
+
+                    {% if anime_info['rank'] %}
+                        <a class="anime-popularity-rank-number">#{{ anime_info['rank'] }}</a>
+                    {% else %}
+                        <a class="anime-popularity-rank-number">None</a>
+                    {% endif %}
+
                 </div>
 
                 <div class="anime-popularity-popularity">
@@ -143,7 +149,87 @@
 
             </div>
 
+            <div class="anime-status">
+                {% if anime_info['type'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Type</a>
+                    <a class="anime-status-block-text"> {{ anime_info['type'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['episodes'] is not none %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Episodes</a>
+                    <a class="anime-status-block-text"> {{ anime_info['episodes'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['status'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Status</a>
+                    <a class="anime-status-block-text"> {{ anime_info['status'] }}</a>
+                </div>
+                {% endif %}
+                
+                {% if anime_info['aired'] and anime_info['aired']['string'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Aired</a>
+                    <a class="anime-status-block-text"> {{ anime_info['aired']['string'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['duration'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Duration</a>
+                    <a class="anime-status-block-text"> {{ anime_info['duration'] }}</a>
+                </div>
+                {% endif %}
+                
+                {% if anime_info['rating'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Rating</a>
+                    <a class="anime-status-block-text"> {{ anime_info['rating'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['season'] and anime_info['year'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Premiered</a>
+                    <a class="anime-status-block-text"> {{ anime_info['season'][0]|upper }}{{ anime_info['season'][1:] }} {{ anime_info['year'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['broadcast'] and anime_info['broadcast']['string'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Broadcast</a>
+                    <a class="anime-status-block-text"> {{ anime_info['broadcast']['string'] }}</a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['genres'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Genres</a>
+                    <a class="anime-status-block-text">
+                        {{ anime_info['genres'] | join(', ', attribute='name')}}
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if anime_info['themes'] %}
+                <div class="anime-status-block">
+                    <a class="anime-status-block-type">Themes</a>
+                    <a class="anime-status-block-text">
+                        {{ anime_info['themes'] | join(', ', attribute='name')}}
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+
+            {% if anime_info['synopsis'] or anime_info['background'] %}
             <div class="anime-synopsis">
+
+                {% if anime_info['synopsis'] %}
                 <div class="anime-synopsis-title">
                     <a>Synopsis</a>
                 </div>
@@ -151,7 +237,20 @@
                 <div class="anime-synopsis-text">
                     <a>{{ anime_info['synopsis'] }}</a>
                 </div>
+                {% endif %}
+
+                {% if anime_info['background'] %}
+                <div class="anime-synopsis-title">
+                    <a>Background</a>
+                </div>
+                
+                <div class="anime-synopsis-text">
+                    <a>{{ anime_info['background'] }}</a>
+                </div>
+
+                {% endif %}
             </div>
+            {% endif %}
         </div>
     </div>
 </body>

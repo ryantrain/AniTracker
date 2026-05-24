@@ -59,7 +59,7 @@
         <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
 
         <div class="profile-menu-dropdown">
-            <a href="/profile/{{ current_username }}/" class="profile-menu-item">Profile</a>
+            <a href="/profile/{{ current_user.username }}/" class="profile-menu-item">Profile</a>
 
             <form method="POST" action="{{ url_for('search', query=query, page=pagination_info['current_page']) }}">
                 <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
@@ -77,7 +77,7 @@
             <div class="search-results-items">
             {% for data, title in zip(anime_info, anime_titles) %}
                 <form action="{{ url_for('anime', title=title, id=data['mal_id']) }}" method="GET">
-                    <a href="/anime/{{ title }}/{{ data['mal_id'] }}/" class="search-results-item">
+                    <a href="{{ url_for('anime', title=title, id=data['mal_id']) }}" class="search-results-item">
                         <img src="{{ data['images']['jpg']['image_url'] }}"/>
                         <p class="search-results-item">{{ data['title'] }}</p>
                     </a>    
