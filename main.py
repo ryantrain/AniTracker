@@ -148,7 +148,7 @@ def profile(username):
     return render_template('profile.html', current_username=current_username, profile_picture=profile_picture)
 
 @app.route('/search/', methods=['GET', 'POST'])
-@app.route('/search/<string:query>/', methods=['GET', 'POST'])
+@app.route('/search/<path:query>/', methods=['GET', 'POST'])
 def search(query=None):
 
     if request.method == 'POST':
