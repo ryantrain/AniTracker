@@ -9,16 +9,16 @@ ALL information will be cleared upon site shutdown (minus possibly user informat
         - Set profile pictures with flask (maybe but lazy)
 - Create users (stores users and passwords)
     - Change icons and behaviourability when not logged in
-- Create a framework for anime information where:
-    - Upon request, the user's click will generate an html with the anime's information pulled from the API
-    - Fill out the page with the anime's information
-    - Display it in a good manner
 - Improve the home page (show first x animes in a repeated cycle, from left to right)
 - Add a search history clear button (localStorage.clear())
 - Add icons for search bar (magnifying glass) and a history symbol beside every search bar item (history symbol)
-- Create a logged in user page(s)
-- NEXT, create user system and register page (copy from login page)
-- Make general profiling system (let users look at other people's profiles even when not logged in)
+- Allow option for users to insert their own profile pictures
+- Temporarily cache main menu pictures to allow for faster loading
+- Add more to profile page
+    - Messages (?)
+    - Bio (this at least)
+- Make interactive buttons at the bottom of the search bar (Previous 1 2 3 ... Last Next)
+- Add some text to the homepage
 
 NEXT GOAL: create proper nav bar on the left
 
