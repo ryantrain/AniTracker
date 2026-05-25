@@ -133,12 +133,16 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/profile/<string:username>/')
+@app.route('/profile/<string:username>/', methods=['GET', 'POST'])
 def profile(username):
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if request.form.get('logout'):
+                logout_user()
+                return redirect(url_for('profile', username=username))
+            
     user = User.query.filter_by(username=username).first_or_404()
-    current_username = user.username
-    profile_picture = user.profile_picture if user.profile_picture else None
-    return render_template('profile.html', current_username=current_username, profile_picture=profile_picture)
+    return render_template('profile.html', user=user)
 
 @app.route('/search/', methods=['GET', 'POST'])
 @app.route('/search/<path:query>/', methods=['GET', 'POST'])
@@ -211,8 +215,11 @@ def anime(title, id):
 def bookmarks():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-    print([bookmark for bookmark in current_user.bookmarks])
-    anime_list = [api.search_anime_by_id(anime_id)['data'] for anime_id in current_user.bookmarks]
+    anime_list = []
+    for anime_id in current_user.bookmarks:
+        anime_data = api.search_anime_by_id(anime_id)
+        if anime_data and 'data' in anime_data:
+            anime_list.append(anime_data['data'])
     return render_template('bookmarks.html', anime_list=anime_list)
 
 with app.app_context():

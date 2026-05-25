@@ -33,11 +33,16 @@
             <a href="/">ANITRACKER</a>
         </div>
 
-        <a class="nav-item" href="/">Home</a>
+        <a class="nav-item" href="{{ url_for('home') }}">Home</a>
+
+        {% if current_user.is_authenticated %}
+            <a class="nav-item" href="{{ url_for('bookmarks') }}">Bookmarks</a>
+        {% endif %}
+
     </nav>
 
     <div class="interactive-box">
-        <a href="/">ANITRACKER</a>
+        <a href="{{ url_for('home') }}">ANITRACKER</a>
     </div>
 
     <form method="GET" action="{{ url_for ('search')}}" class="search-bar">
@@ -52,7 +57,7 @@
 
         <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
 
-        <a href="/register/" class="credential-button">REGISTER</a>
+        <a href="{{ url_for('register') }}" class="credential-button">REGISTER</a>
 
     {% else %}
 

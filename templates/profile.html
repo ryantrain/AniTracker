@@ -34,10 +34,15 @@
         </div>
 
         <a class="nav-item" href="/">Home</a>
+
+        {% if current_user.is_authenticated %}
+            <a class="nav-item" href="{{ url_for('bookmarks') }}">Bookmarks</a>
+        {% endif %}
+
     </nav>
 
     <div class="interactive-box">
-        <a href="/">ANITRACKER</a>
+        <a href="{{ url_for('home') }}">ANITRACKER</a>
     </div>
 
     <form action="{{url_for('search')}}" method="POST" class="search-form">
@@ -49,24 +54,34 @@
     </form>
    
 
-    <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
+    {% if not current_user.is_authenticated %}
 
-    <div class="profile-menu-dropdown">
-        <a href="/profile/{{ current_username }}/" class="profile-menu-item">Profile</a>
+        <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
 
-        <form method="POST" action="{{ url_for('home') }}">
-            <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
-        </form>
+        <a href="{{ url_for('register') }}" class="credential-button">REGISTER</a>
 
-    </div>
+    {% else %}
+
+        <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
+
+        <div class="profile-menu-dropdown">
+            <a href="{{ url_for('profile', username=current_user.username) }}" class="profile-menu-item">Profile</a>
+
+            <form method="POST" action="{{ url_for('profile', username=current_user.username) }}">
+                <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
+            </form>
+
+        </div>
+
+    {% endif %}
 
 </header>
 
 <body>
 
     <div class="rect"></div>
-    <img src="{{ url_for ('static', filename='./images/' + profile_picture ) }} " class="profile-picture">
-    <a class="profile-name">{{ current_username }}</a>
+    <img src="{{ url_for ('static', filename='./images/' + user.profile_picture ) }} " class="profile-picture">
+    <a class="profile-name">{{ user.username }}</a>
 
 
 </body>

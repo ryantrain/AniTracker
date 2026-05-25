@@ -183,9 +183,6 @@
       max-width: 96rem;
     }
   }
-  .block {
-    display: block;
-  }
   .flex {
     display: flex;
   }
@@ -207,15 +204,9 @@
   .resize {
     resize: both;
   }
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
-  }
-  .text-wrap {
-    text-wrap: wrap;
   }
   .underline {
     text-decoration-line: underline;
@@ -609,6 +600,35 @@ footer {
 }
 .search-form {
   margin-left: auto;
+}
+.credential-button {
+  background-color: #4facfe6e;
+  color: white;
+  padding: 5px 10px;
+  width: auto;
+  border-radius: 5px;
+  height: auto;
+  justify-content: right;
+  text-align: center;
+  font-size: 18px;
+  font-family: sans-serif;
+  margin-left: 20px;
+  float: right;
+  display: table-cell;
+  vertical-align: middle;
+  transition: all 0.1s ease-in-out;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: "poppins";
+}
+.credential-button:last-of-type {
+  margin-right: 8px;
+  margin-left: 18px;
+}
+.credential-button:hover {
+  border-color: white;
+  border-width: 2px;
+  transform: scale(1.01);
 }
 @property --tw-rotate-x {
   syntax: "*";
