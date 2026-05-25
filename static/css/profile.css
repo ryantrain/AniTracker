@@ -395,14 +395,47 @@ footer{
 }
 
 .profile-picture {
-    position: fixed;
+    position: relative;
     top: 15vh;
-    left: 20vh;
+    left: 10vw;
     z-index: 1;
-    border-width: 1px;
+    border-width: 2px;
     border-color: white ;
     border-radius: 50%;
     width: 25vh;
+    height: 25vh;
+    object-fit: cover;
+}
+
+.profile-picture-button {
+    position: absolute;
+    align-content: center;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 25vh;
+    height: 25vh;
+    color: white;
+}
+
+.profile-picture-button:hover {
+    opacity: 1;
+}
+
+.profile-picture-input {
+    display: none;
+}
+
+.profile-picture-card {
+    position: absolute;
+    top: 15vh;
+    left: 10vw;
+    width: 25vh;
+    height: 25vh;
+    border-radius: 50%;
 }
 
 .profile-name {

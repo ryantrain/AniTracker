@@ -7,6 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.mutable import MutableList
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(32)  # Generate a random secret key for session management
@@ -221,6 +223,29 @@ def bookmarks():
         if anime_data and 'data' in anime_data:
             anime_list.append(anime_data['data'])
     return render_template('bookmarks.html', anime_list=anime_list)
+
+@app.route('/upload',  methods=['POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+
+        if 'profile_picture_upload' not in request.files:
+            return redirect(url_for('profile', username=current_user.username))
+        
+        file = request.files['profile_picture_upload']
+
+        if file.filename == '':
+            return redirect(url_for('profile', username=current_user.username))
+        
+        if file:
+            filename = f"{current_user.username}_{secure_filename(file.filename)}"
+            file.save(f'static/images/{filename}')
+            if current_user.profile_picture != 'default-icon.png': 
+                path = os.path.join(app.root_path, 'static', 'images', current_user.profile_picture)
+                os.remove(path)
+            current_user.profile_picture = filename
+            db.session.commit()
+            return redirect(url_for('profile', username=current_user.username))
 
 with app.app_context():
     db.create_all()

@@ -80,9 +80,24 @@
 <body>
 
     <div class="rect"></div>
-    <img src="{{ url_for ('static', filename='./images/' + user.profile_picture ) }} " class="profile-picture">
-    <a class="profile-name">{{ user.username }}</a>
 
+    {% if current_user.is_authenticated and current_user.id == user.id %}
+    
+        <img src="{{ url_for ('static', filename='./images/' + user.profile_picture ) }} " class="profile-picture" alt="{{ user.username }} profile picture">
+
+        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="profile-picture-card">
+
+            <label for="profile_picture_upload" class="profile-picture-button">Choose photo</label>
+            <input id="profile_picture_upload" type="file" name="profile_picture_upload" accept="image/*" class="profile-picture-input" onchange="this.form.submit()">
+
+        </form>
+
+    {% else %}
+
+        <img src="{{ url_for ('static', filename='./images/' + user.profile_picture ) }} " class="profile-picture" alt="{{ user.username }} profile picture">
+    
+    {% endif %}
+    <a class="profile-name">{{ user.username }}</a>
 
 </body>
 

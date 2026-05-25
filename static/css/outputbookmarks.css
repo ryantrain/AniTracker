@@ -183,6 +183,9 @@
       max-width: 96rem;
     }
   }
+  .block {
+    display: block;
+  }
   .flex {
     display: flex;
   }
@@ -204,9 +207,15 @@
   .resize {
     resize: both;
   }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .text-wrap {
+    text-wrap: wrap;
   }
   .underline {
     text-decoration-line: underline;

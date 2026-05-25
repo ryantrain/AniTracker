@@ -175,7 +175,6 @@ header img{
     top: 10vh;
     color: white;
     mask-image: none;
-    z-index: 4;
 }
 
 .search-bar{
