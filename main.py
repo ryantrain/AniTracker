@@ -195,15 +195,23 @@ def anime(title, id):
     is_bookmarked = id in current_user.bookmarks if current_user.is_authenticated else False
     authenticated = current_user.is_authenticated
     search_results = api.search_anime_by_id(id)
-    anime_info = search_results['data'] if 'data' in search_results else []
-    return render_template('anime.html', anime_info=anime_info, authenticated=authenticated
-                           , is_bookmarked=is_bookmarked)
+    anime_info = search_results['data'] if search_results and 'data' in search_results else None
+
+    return render_template(
+        'anime.html',
+        anime_info=anime_info,
+        authenticated=authenticated,
+        is_bookmarked=is_bookmarked,
+        requested_title=title,
+        requested_id=id,
+    )
 
 @app.route('/bookmarks/')
 @login_required
 def bookmarks():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
+    print([bookmark for bookmark in current_user.bookmarks])
     anime_list = [api.search_anime_by_id(anime_id)['data'] for anime_id in current_user.bookmarks]
     return render_template('bookmarks.html', anime_list=anime_list)
 

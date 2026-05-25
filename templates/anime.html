@@ -10,6 +10,30 @@
     </title>
 </head>
 
+{% if not anime_info %}
+<div class="anime-content">
+    <div class="anime-info">
+        <div class="info-header-row">
+            <div class="info-header">
+                <a>Anime Details Unavailable</a>
+            </div>
+        </div>
+
+        <div class="anime-synopsis">
+            <div class="anime-synopsis-title">
+                <a>Could not load this title right now.</a>
+            </div>
+            <div class="anime-synopsis-text">
+                <a>{{ anime_error if anime_error else 'The upstream API did not return anime data. Please refresh in a moment.' }}</a>
+            </div>
+            <div class="anime-synopsis-text">
+                <a><strong>ID:</strong> {{ requested_id }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
 <header>
 
     <div class="search-bar-backdrop"></div>
@@ -61,7 +85,7 @@
         <div class="profile-menu-dropdown">
             <a href="/profile/{{ current_user.username }}/" class="profile-menu-item">Profile</a>
 
-            <form method="POST" action="{{ url_for('anime', title=anime_info['title'].replace(' ', '-'), id=anime_info['mal_id']) }}">
+            <form method="POST" action="{{ url_for('anime', title=requested_title, id=requested_id) }}">
                 <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
             </form>
 
@@ -253,7 +277,9 @@
             {% endif %}
         </div>
     </div>
-</body>
 
+
+</body>
+{% endif %}
 
 </html>

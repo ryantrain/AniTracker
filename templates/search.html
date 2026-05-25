@@ -59,7 +59,7 @@
         <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
 
         <div class="profile-menu-dropdown">
-            <a href="/profile/{{ current_user.username }}/" class="profile-menu-item">Profile</a>
+            <a href="{{ url_for ('profile', username=current_user.username) }}" class="profile-menu-item">Profile</a>
 
             <form method="POST" action="{{ url_for('search', query=query, page=pagination_info['current_page']) }}">
                 <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
