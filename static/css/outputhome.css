@@ -348,35 +348,6 @@ body.nav-active .nav-backdrop {
 body.nav-active .search-bar, .search-bar-dropdown {
   z-index: 1;
 }
-.credential-button {
-  background-color: #4facfe6e;
-  color: white;
-  padding: 5px 10px;
-  width: auto;
-  border-radius: 5px;
-  height: auto;
-  justify-content: right;
-  text-align: center;
-  font-size: 18px;
-  font-family: sans-serif;
-  margin-left: 20px;
-  float: right;
-  display: table-cell;
-  vertical-align: middle;
-  transition: all 0.1s ease-in-out;
-  border: 2px solid transparent;
-  cursor: pointer;
-  font-family: "poppins";
-}
-.credential-button:last-of-type {
-  margin-right: 8px;
-  margin-left: 18px;
-}
-.credential-button:hover {
-  border-color: white;
-  border-width: 2px;
-  transform: scale(1.01);
-}
 header img {
   width: 10px;
   height: 10px;
@@ -524,6 +495,70 @@ body.search-active .search-bar-backdrop {
 .search-bar:focus-within .search-bar-dropdown-item-empty {
   transform: translateY(0);
 }
+.profile-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  margin-left: 16px;
+  margin-right: 16px;
+  border-color: white;
+  border-width: 2px;
+  cursor: pointer;
+  z-index: 1;
+}
+.profile-icon-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0, 0);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+body.profile-active .profile-icon-backdrop {
+  background-color: rgba(0,0,0, 0.5);
+  backdrop-filter: blur(2px);
+  opacity: 1;
+  pointer-events: all;
+  z-index: 2;
+}
+.profile-menu-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 1%;
+  background-color: rgba(24, 24, 26, 0.8);
+  border-radius: 12px;
+  display: none;
+  opacity: 0;
+  padding: 10px 0;
+  transform: translateY(-6px) scaleY(0.98);
+  transform-origin: top;
+  transition: opacity 0.2s ease, transform 0.2s ease, max-height 0.2s ease;
+}
+body.profile-active .profile-menu-dropdown {
+  display: block;
+  opacity: 1;
+  z-index: 3;
+  font-size: 18px;
+}
+.profile-menu-item {
+  color: white;
+  padding: 8px 20px;
+  text-decoration: none;
+  font-family: 'poppins';
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
+body.profile-active .profile-icon {
+  z-index: 3;
+  pointer-events: auto;
+}
+body.profile-active .search-bar, .search-bar-dropdown {
+  z-index: 1;
+}
 body {
   background-color: black;
   background-size: cover;
@@ -595,6 +630,35 @@ p {
 }
 footer {
   margin-top: auto;
+}
+.credential-button {
+  background-color: #4facfe6e;
+  color: white;
+  padding: 5px 10px;
+  width: auto;
+  border-radius: 5px;
+  height: auto;
+  justify-content: right;
+  text-align: center;
+  font-size: 18px;
+  font-family: sans-serif;
+  margin-left: 20px;
+  float: right;
+  display: table-cell;
+  vertical-align: middle;
+  transition: all 0.1s ease-in-out;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: "poppins";
+}
+.credential-button:last-of-type {
+  margin-right: 8px;
+  margin-left: 18px;
+}
+.credential-button:hover {
+  border-color: white;
+  border-width: 2px;
+  transform: scale(1.01);
 }
 @property --tw-rotate-x {
   syntax: "*";

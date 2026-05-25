@@ -10,7 +10,8 @@
     "dev-home-logged-in": "npx @tailwindcss/cli -i ./static/css/home_logged_in.css -o ./static/css/outputhomeloggedin.css --watch",
     "dev-profile": "npx @tailwindcss/cli -i ./static/css/profile.css -o ./static/css/outputprofile.css --watch",
     "dev-search": "npx @tailwindcss/cli -i ./static/css/search.css -o ./static/css/outputsearch.css --watch",
-    "dev-anime": "npx @tailwindcss/cli -i ./static/css/anime.css -o ./static/css/outputanime.css --watch"
+    "dev-anime": "npx @tailwindcss/cli -i ./static/css/anime.css -o ./static/css/outputanime.css --watch",
+    "dev-bookmarks": "npx @tailwindcss/cli -i ./static/css/bookmarks.css -o ./static/css/outputbookmarks.css --watch"
   },
   "keywords": [],
   "author": "",

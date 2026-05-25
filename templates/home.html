@@ -18,6 +18,8 @@
 
     <div class="nav-backdrop"></div>
 
+    <div class="profile-icon-backdrop"></div>
+
     <label for='nav-toggle' class='nav-toggle-label'>
         <svg fill="#FFFFFF" style="margin-left: 5px;" width="30" height="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 24.75 24.75" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2 c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2 c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"></path> </g> </g></svg>
     </label>
@@ -38,16 +40,34 @@
         <a href="/">ANITRACKER</a>
     </div>
 
-    <div class="search-bar">
+    <form method="GET" action="{{ url_for ('search')}}" class="search-bar">
+        <div>
         <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
 
         <div class="search-bar-dropdown"></div>
     </div>
+    </form>
 
-    <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
+    {% if not current_user.is_authenticated %}
 
-    <a href="/register/" class="credential-button">REGISTER</a>
+        <a href="{{ url_for('login', next=request.url) }}" class="credential-button">LOGIN</a>
 
+        <a href="/register/" class="credential-button">REGISTER</a>
+
+    {% else %}
+
+    <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
+
+    <div class="profile-menu-dropdown">
+        <a href="{{ url_for('profile', username=current_user.username) }}" class="profile-menu-item">Profile</a>
+
+        <form method="POST" action="{{ url_for('home') }}">
+            <input type="submit" id='logout' name="logout" class="profile-menu-item" value="Logout"/>
+        </form>
+
+    </div>
+
+    {% endif %}
 
 </header>
 
@@ -57,17 +77,17 @@
     
     <div class="body-gradient">
         <div class="anime-list">
-            {% for thumbnail, anime in zip(anime_thumbnails, anime_list) %}
+            {% for anime in anime_list %}
             <div class="anime-card">
 
                 <div class="anime-thumbnail">
-                    <a href="./search/{{ anime }}/">
-                        <img src= "{{ thumbnail }}" alt="Anime Thumbnail" href="./search/{{ anime }}/"/>
+                    <a href="{{ url_for('anime', title=anime['data']['title'].replace(' ', '-'), id=anime['data']['mal_id']) }}">
+                        <img src= "{{ anime['data']['images']['jpg']['image_url'] }}" alt="Anime Thumbnail" />
                     </a>
                 </div>
 
                 <div class="anime-metadata">
-                    {{ anime }}  
+                    {{ anime['data']['title'] }}
                 </div>
             </div>
             {% endfor %}    

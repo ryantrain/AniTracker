@@ -93,17 +93,10 @@ def home():
             logout_user()
             return redirect(url_for('home'))
         
-    anime_data = get_anime_data()
-    anime_names = anime_data['anime_list']
-    anime_thumbnails = anime_data['anime_thumbnails']
-    template_name = 'home_logged_in.html' if current_user.is_authenticated else 'home.html'
-    current_username = current_user.username if current_user.is_authenticated else None
+    anime_data = api.get_anime_list(1)
     return render_template(
-        template_name,
-        anime_list=anime_names,
-        anime_thumbnails=anime_thumbnails,
-        zip=zip,
-        current_username=current_username,
+        'home.html',
+        anime_list=anime_data,
         storage=None,
     )
 
@@ -206,13 +199,14 @@ def anime(title, id):
     return render_template('anime.html', anime_info=anime_info, authenticated=authenticated
                            , is_bookmarked=is_bookmarked)
 
+@app.route('/bookmarks/')
+@login_required
+def bookmarks():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    anime_list = [api.search_anime_by_id(anime_id)['data'] for anime_id in current_user.bookmarks]
+    return render_template('bookmarks.html', anime_list=anime_list)
+
 with app.app_context():
     db.create_all()
 
-def get_anime_data():
-    anime = api.get_anime_list(0)
-    return {
-        'anime_list': [a['data']['title'] for a in anime if a is not None],
-        'anime_thumbnails': [a['data']['images']['jpg']['image_url'] for a in anime if a is not None],
-        'zip': zip
-    }
