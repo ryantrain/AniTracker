@@ -418,6 +418,7 @@ footer{
     width: 25vh;
     height: 25vh;
     color: white;
+    text-align: center;
 }
 
 .profile-picture-button:hover {
