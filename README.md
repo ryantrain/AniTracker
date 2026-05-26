@@ -2,7 +2,7 @@ Welcome to ANITRACKER!
 
 ANITRACKER utilizes Jikan's API to display information and keep track of personal libraries, similar to MyAnimeList and AniList.
 
-In order to set up the environment, please first follow the flask setup tutorial [here](https://flask.palletsprojects.com/en/stable/installation/)
+In order to set up the environment, please first follow the flask setup tutorial [here](https://flask.palletsprojects.com/en/stable/installation/).
 
 To ensure that the environment was set up correctly, open a new terminal. The terminal should start with "(.venv) PS" and following with your current directory after a short delay.
 
