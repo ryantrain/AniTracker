@@ -46,11 +46,11 @@ function renderStorageDropdown() {
             if (value && value.trim() !== ''){
                 const div = document.createElement('a');
                 div.classList.add('search-bar-dropdown-item');
-                div.setAttribute('href', './search/' + value + '/');
+                div.setAttribute('href', '/search/' + encodeURIComponent(value.trim()) + '/');
                 div.innerHTML = historyIcon + value;
                 div.addEventListener('click', () => {
                     storageDisplay.innerHTML = '';  
-                    window.location.href = "/search/" + value + "/";
+                    window.location.href = "/search/" + encodeURIComponent(value.trim()) + "/";
                 });
                 storageDisplay[0].appendChild(div);
             }
@@ -107,3 +107,37 @@ profileBackdrop.addEventListener('pointerdown', function(event) {
     event.preventDefault();
     body.classList.remove('profile-active');
 });
+
+const bookmarkStatusFilter = document.getElementById('bookmark-status-filter');
+const bookmarkItems = document.querySelectorAll('.bookmark-item');
+const bookmarkFilterEmptyState = document.getElementById('bookmark-filter-empty-state');
+
+function applyBookmarkStatusFilter() {
+    if (!bookmarkStatusFilter || !bookmarkItems.length) {
+        if (bookmarkFilterEmptyState) {
+            bookmarkFilterEmptyState.classList.add('is-hidden');
+        }
+        return;
+    }
+
+    const selectedStatus = bookmarkStatusFilter.value;
+    let visibleCount = 0;
+
+    bookmarkItems.forEach(function(bookmarkItem) {
+        const bookmarkStatus = bookmarkItem.dataset.bookmarkStatus;
+        const shouldShow = selectedStatus === 'all' || bookmarkStatus === selectedStatus;
+        bookmarkItem.classList.toggle('is-hidden', !shouldShow);
+        if (shouldShow) {
+            visibleCount += 1;
+        }
+    });
+
+    if (bookmarkFilterEmptyState) {
+        bookmarkFilterEmptyState.classList.toggle('is-hidden', visibleCount !== 0);
+    }
+}
+
+if (bookmarkStatusFilter) {
+    bookmarkStatusFilter.addEventListener('change', applyBookmarkStatusFilter);
+    applyBookmarkStatusFilter();
+}

@@ -138,6 +138,16 @@
                     <form action="{{ url_for ('anime', title=anime_info['title'].replace(' ', '-'), id=anime_info['mal_id'])}}" method="POST" class="anime-bookmark-form">
                         <div class="database-querying">
                             {% if is_bookmarked %}
+                                <div class="bookmark-status-control">
+                                    <label for="bookmark-status" class="bookmark-status-control-label">Status</label>
+                                    <select id="bookmark-status" name="bookmark_status" class="bookmark-status-control-select" onchange="this.form.submit()">
+                                        <option value="Watching" {% if current_bookmark_status == 'Watching' %}selected{% endif %}>Watching</option>
+                                        <option value="Completed" {% if current_bookmark_status == 'Completed' %}selected{% endif %}>Completed</option>
+                                        <option value="Dropped" {% if current_bookmark_status == 'Dropped' %}selected{% endif %}>Dropped</option>
+                                        <option value="Waiting to Air" {% if current_bookmark_status == 'Waiting to Air' %}selected{% endif %}>Waiting to Air</option>
+                                    </select>
+                                </div>
+
                                 <button type="submit" name="bookmark_action" value="remove" class="database-querying-button remove">Remove from List</button>
                             {% else %}
                                 <button type="submit" name="bookmark_action" value="add" class="database-querying-button add">Add to List</button>

@@ -183,9 +183,6 @@
       max-width: 96rem;
     }
   }
-  .block {
-    display: block;
-  }
   .flex {
     display: flex;
   }
@@ -632,6 +629,48 @@ footer {
   position: relative;
   margin: 10vh auto;
 }
+.bookmark-filters {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.bookmark-filters-label {
+  color: white;
+  font-family: "poppins";
+  font-size: 14px;
+}
+.bookmark-status-filter {
+  background-color: #18181a;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  font-family: "poppins";
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.1s ease;
+}
+.bookmark-status-filter:hover, .bookmark-status-filter:focus {
+  border-color: white;
+}
+.bookmark-item.is-hidden {
+  display: none;
+}
+.bookmark-filter-empty-state {
+  grid-column: 1 / -1;
+  color: white;
+  font-family: "poppins";
+  font-size: 24px;
+  margin-top: 2rem;
+  text-align: left;
+}
+.bookmark-filter-empty-state.is-hidden {
+  display: none;
+}
 .bookmark-item {
   background-color: rgba(71, 71, 236, 0.439);
   display: grid;
@@ -753,6 +792,21 @@ footer {
   align-items: center;
   height: 1.5rem;
   justify-content: center;
+}
+.bookmark-status-bookmark {
+  color: white;
+}
+.status-watching {
+  background-color: #2da9d2;
+}
+.status-completed {
+  background-color: #92b97e;
+}
+.status-dropped {
+  background-color: #cf6830;
+}
+.status-waiting {
+  background-color: #8b6cf6;
 }
 .bookmark-info-synopsis {
   grid-area: bookmark-info-synopsis;

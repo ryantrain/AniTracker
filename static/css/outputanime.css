@@ -183,9 +183,6 @@
       max-width: 96rem;
     }
   }
-  .block {
-    display: block;
-  }
   .flex {
     display: flex;
   }
@@ -693,7 +690,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   flex: 1 1 auto;
-  padding-right: 177px;
+  padding-right: 373px;
 }
 .info-header a {
   width: calc(100% - 177px);
@@ -903,14 +900,41 @@ body {
   margin-left: 0;
   display: inline-flex;
   align-items: center;
-  transition: all 0.1s ease-in-out;
   border: 2px solid transparent;
   cursor: pointer;
+  transition: 0.1s ease;
 }
 .database-querying-button:hover {
-  border-color: white;
-  border-width: 2px;
+  border: 2px solid white;
   transform: scale(1.01);
+}
+.bookmark-status-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 180px;
+  margin-right: 1rem;
+}
+.bookmark-status-control-label {
+  color: white;
+  font-size: 12px;
+  font-family: "poppins";
+  opacity: 0.85;
+}
+.bookmark-status-control-select {
+  background-color: #18181a;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-family: "poppins";
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.1s ease;
+}
+.bookmark-status-control-select:hover, .bookmark-status-control-select:focus {
+  border-color: white;
 }
 .anime-status {
   color: white;

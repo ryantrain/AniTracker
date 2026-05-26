@@ -46,11 +46,10 @@
     </div>
 
     <form method="GET" action="{{ url_for ('search')}}" class="search-bar">
-        <div>
         <input id="search-query" type="text" name="Search_Bar" placeholder="Search..."/>
 
         <div class="search-bar-dropdown"></div>
-    </div>
+
     </form>
 
     <img src=" {{ url_for ('static', filename='./images/default-icon.png') }} " id="profile-icon" alt="Profile Icon" class="profile-icon"/>
@@ -70,97 +69,127 @@
 
     <div class="container">
 
-        {% for bookmark in anime_list %}
-            <div class ="bookmark-item">
-                <div class="bookmark-image">
-                    <a href="{{ url_for ('anime', title=bookmark['title'].replace(' ', '-'), id=bookmark['mal_id']) }}">
-                        <img src="{{ bookmark['images']['jpg']['image_url'] }} ">
-                    </a>
+        <div class="bookmark-filters">
+            <label for="bookmark-status-filter" class="bookmark-filters-label">Filter by status</label>
+            <select id="bookmark-status-filter" class="bookmark-status-filter">
+                <option value="all">All</option>
+                <option value="Watching">Watching</option>
+                <option value="Completed">Completed</option>
+                <option value="Dropped">Dropped</option>
+                <option value="Waiting to Air">Waiting to Air</option>
+            </select>
+        </div>
+
+        {% if anime_list %}
+            {% for bookmark in anime_list %}
+                <div class ="bookmark-item" data-bookmark-status="{{ bookmark['bookmark_status'] }}">
+                    <div class="bookmark-image">
+                        <a href="{{ url_for ('anime', title=bookmark['title'].replace(' ', '-'), id=bookmark['mal_id']) }}">
+                            <img src="{{ bookmark['images']['jpg']['image_url'] }} ">
+                        </a>
+                    </div>
+
+                    <div class="bookmark-info">
+
+                        <div class="bookmark-info-title">
+                            <a class="bookmark-info-title-text" href="{{ url_for ('anime', title=bookmark['title'].replace(' ', '_'), id=bookmark['mal_id']) }}">{{ bookmark['title'] }}</a>
+
+                            {% if bookmark['status'] == 'Currently Airing' %}
+                                <a class="bookmark-info-state">
+                                    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#2da9d2" cx="18" cy="18" r="18"></circle></g></svg>
+                                    Airing
+                                </a>
+                            {% elif bookmark['status'] == 'Finished Airing' %}
+                                <a class="bookmark-info-state">
+                                    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#92b97e" cx="18" cy="18" r="18"></circle></g></svg>
+                                Completed
+                                </a>
+                            {% else %}
+                                <a class="bookmark-info-state">
+                                    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#cf6830" cx="18" cy="18" r="18"></circle></g></svg>    
+                                    Not Aired
+                                </a>
+                            {% endif %}
+
+                        </div>
+                        
+                        <div class="bookmark-info-stats">
+                            <div class="bookmark-info-stats-item">
+                                <div class="bookmark-info-stats-item-category">
+                                    <span>Score</span>
+                                </div>
+                                <div class="bookmark-info-stats-item-value">
+                                    <span>{{ bookmark['score'] }}</span>
+                                </div>
+                            </div>
+
+                            <div class="bookmark-info-stats-item">
+                                <div class="bookmark-info-stats-item-category">
+                                    <span>Rank</span>
+                                </div>
+                                <div class="bookmark-info-stats-item-value">
+                                    <span>{{ bookmark['rank'] }}</span>
+                                </div>
+                            </div>
+                            <div class="bookmark-info-stats-item">
+                                <div class="bookmark-info-stats-item-category">
+                                    <Span>Popularity</Span>
+                                </div>
+                                <div class="bookmark-info-stats-item-value">
+                                    <span>{{ bookmark['popularity'] }}</span>
+                                </div>
+                            </div>
+                            <div class="bookmark-info-stats-item">
+                                <div class="bookmark-info-stats-item-category">
+                                    <Span>Members</Span>
+                                </div>
+                                <div class="bookmark-info-stats-item-value">
+                                    <span>{{ bookmark['members'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bookmark-info-tags">
+                            {% if bookmark['bookmark_status'] == 'Watching' %}
+                                <span class="bookmark-info-tags-tag bookmark-status-bookmark status-watching">Watching</span>
+                            {% elif bookmark['bookmark_status'] == 'Completed' %}
+                                <span class="bookmark-info-tags-tag bookmark-status-bookmark status-completed">Completed</span>
+                            {% elif bookmark['bookmark_status'] == 'Dropped' %}
+                                <span class="bookmark-info-tags-tag bookmark-status-bookmark status-dropped">Dropped</span>
+                            {% else %}
+                                <span class="bookmark-info-tags-tag bookmark-status-bookmark status-waiting">Waiting to Air</span>
+                            {% endif %}
+
+                            {% if bookmark['rating'].split('-')[0]|trim == 'G' %}
+                                <span class="bookmark-info-tags-tag" style="background-color: green;">{{ bookmark['rating'].split('-')[0] }}</span>
+                            {% elif bookmark['rating'].split('-')[0]|trim == 'PG' %}
+                                <span class="bookmark-info-tags-tag" style="background-color: rgb(153, 110, 31);">{{ bookmark['rating'].split('-')[0] }}</span>
+                            {% elif bookmark['rating'].split('-')[0]|trim == 'R' %}
+                                <span class="bookmark-info-tags-tag" style="background-color: red;">{{ bookmark['rating'].split('-')[0] }}</span>
+                            {% endif %}
+
+                            {% for genre in bookmark['genres'] %}
+                                <a class="bookmark-info-tags-tag">{{ genre['name'].upper() }}</a>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="bookmark-info-synopsis">
+                            <a>{{ bookmark['synopsis'] }}</a>
+                        </div>
+
+                    </div>
                 </div>
+            {% endfor %}
 
-                <div class="bookmark-info">
-
-                    <div class="bookmark-info-title">
-                        <a class="bookmark-info-title-text" href="{{ url_for ('anime', title=bookmark['title'].replace(' ', '_'), id=bookmark['mal_id']) }}">{{ bookmark['title'] }}</a>
-
-                        {% if bookmark['status'] == 'Currently Airing' %}
-                            <a class="bookmark-info-state">
-                                <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#2da9d2" cx="18" cy="18" r="18"></circle></g></svg>
-                                Airing
-                            </a>
-                        {% elif bookmark['status'] == 'Finished Airing' %}
-                            <a class="bookmark-info-state">
-                                <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#92b97e" cx="18" cy="18" r="18"></circle></g></svg>
-                            Completed
-                            </a>
-                        {% else %}
-                            <a class="bookmark-info-state">
-                                <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle fill="#cf6830" cx="18" cy="18" r="18"></circle></g></svg>    
-                                Not Aired
-                            </a>
-                        {% endif %}
-
-                    </div>
-                    
-                    <div class="bookmark-info-stats">
-                        <div class="bookmark-info-stats-item">
-                            <div class="bookmark-info-stats-item-category">
-                                <span>Score</span>
-                            </div>
-                            <div class="bookmark-info-stats-item-value">
-                                <span>{{ bookmark['score'] }}</span>
-                            </div>
-                        </div>
-
-                        <div class="bookmark-info-stats-item">
-                            <div class="bookmark-info-stats-item-category">
-                                <span>Rank</span>
-                            </div>
-                            <div class="bookmark-info-stats-item-value">
-                                <span>{{ bookmark['rank'] }}</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-info-stats-item">
-                            <div class="bookmark-info-stats-item-category">
-                                <Span>Popularity</Span>
-                            </div>
-                            <div class="bookmark-info-stats-item-value">
-                                <span>{{ bookmark['popularity'] }}</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-info-stats-item">
-                            <div class="bookmark-info-stats-item-category">
-                                <Span>Members</Span>
-                            </div>
-                            <div class="bookmark-info-stats-item-value">
-                                <span>{{ bookmark['members'] }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bookmark-info-tags">
-
-                        {% if bookmark['rating'].split('-')[0]|trim == 'G' %}
-                            <span class="bookmark-info-tags-tag" style="background-color: green;">{{ bookmark['rating'].split('-')[0] }}</span>
-                        {% elif bookmark['rating'].split('-')[0]|trim == 'PG' %}
-                            <span class="bookmark-info-tags-tag" style="background-color: rgb(153, 110, 31);">{{ bookmark['rating'].split('-')[0] }}</span>
-                        {% elif bookmark['rating'].split('-')[0]|trim == 'R' %}
-                            <span class="bookmark-info-tags-tag" style="background-color: red;">{{ bookmark['rating'].split('-')[0] }}</span>
-                        {% endif %}
-
-                        {% for genre in bookmark['genres'] %}
-                            <a class="bookmark-info-tags-tag">{{ genre['name'].upper() }}</a>
-                        {% endfor %}
-
-                    </div>
-
-                    <div class="bookmark-info-synopsis">
-                        <a>{{ bookmark['synopsis'] }}</a>
-                    </div>
-
-                </div>
+            <div id="bookmark-filter-empty-state" class="bookmark-filter-empty-state is-hidden">
+                No anime found.
             </div>
-        {% endfor %}
+        {% else %}
+            <div style="grid-column: 1 / -1; color: white; font-family: 'poppins'; font-size: 24px; margin-top: 2rem; text-align: left;">
+                No anime found.
+            </div>
+        {% endif %}
     </div>
 </body>
 

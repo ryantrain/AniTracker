@@ -20,6 +20,8 @@ login_manager.init_app(app)
 
 cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DIR': 'cache'})
 
+ALLOWED_BOOKMARK_STATUSES = ('Watching', 'Completed', 'Dropped', 'Waiting to Air')
+
 ##########################################################
 # Database
 ##########################################################
@@ -46,16 +48,103 @@ class User(UserMixin, db.Model):
 
     def check_email(self, email):
         return self.email == email
+
+    def _normalize_bookmark_status(self, status):
+        return status if status in ALLOWED_BOOKMARK_STATUSES else 'Watching'
+
+    def _normalize_bookmark_entry(self, bookmark):
+        if isinstance(bookmark, dict):
+            anime_id = bookmark.get('anime_id', bookmark.get('mal_id', bookmark.get('id')))
+            status = self._normalize_bookmark_status(bookmark.get('status', 'Watching'))
+        else:
+            anime_id = bookmark
+            status = 'Watching'
+
+        if anime_id is None:
+            return None
+
+        return {
+            'anime_id': int(anime_id),
+            'status': status,
+        }
+
+    def normalize_bookmarks(self):
+        normalized_bookmarks = []
+        changed = False
+
+        for bookmark in self.bookmarks or []:
+            normalized_bookmark = self._normalize_bookmark_entry(bookmark)
+            if normalized_bookmark is None:
+                continue
+
+            normalized_bookmarks.append(normalized_bookmark)
+            if normalized_bookmark != bookmark:
+                changed = True
+
+        if changed:
+            self.bookmarks = normalized_bookmarks
+            db.session.commit()
+
+        return normalized_bookmarks
+
+    def get_bookmark_entry(self, anime_id):
+        anime_id = int(anime_id)
+        for bookmark in self.normalize_bookmarks():
+            if bookmark['anime_id'] == anime_id:
+                return bookmark
+        return None
+
+    def get_bookmark_status(self, anime_id):
+        bookmark = self.get_bookmark_entry(anime_id)
+        return bookmark['status'] if bookmark else None
     
     def add_bookmark(self, anime_id):
-        if anime_id not in self.bookmarks:
-            self.bookmarks.append(anime_id)
-            db.session.commit()
+        self.add_bookmark_with_status(anime_id, 'Watching')
+
+    def add_bookmark_with_status(self, anime_id, status):
+        anime_id = int(anime_id)
+        status = self._normalize_bookmark_status(status)
+        bookmarks = self.normalize_bookmarks()
+        updated = False
+
+        for bookmark in bookmarks:
+            if bookmark['anime_id'] == anime_id:
+                bookmark['status'] = status
+                updated = True
+                break
+
+        if not updated:
+            bookmarks.append({'anime_id': anime_id, 'status': status})
+
+        self.bookmarks = bookmarks
+        db.session.commit()
     
     def remove_bookmark(self, anime_id):
-        if anime_id in self.bookmarks:
-            self.bookmarks.remove(anime_id)
+        anime_id = int(anime_id)
+        bookmarks = self.normalize_bookmarks()
+        filtered_bookmarks = [bookmark for bookmark in bookmarks if bookmark['anime_id'] != anime_id]
+
+        if len(filtered_bookmarks) != len(bookmarks):
+            self.bookmarks = filtered_bookmarks
             db.session.commit()
+
+    def set_bookmark_status(self, anime_id, status):
+        anime_id = int(anime_id)
+        status = self._normalize_bookmark_status(status)
+        bookmarks = self.normalize_bookmarks()
+        found = False
+
+        for bookmark in bookmarks:
+            if bookmark['anime_id'] == anime_id:
+                bookmark['status'] = status
+                found = True
+                break
+
+        if not found:
+            bookmarks.append({'anime_id': anime_id, 'status': status})
+
+        self.bookmarks = bookmarks
+        db.session.commit()
     
     def set_profile_picture(self, filename):
         if self.profile_picture != 'default-icon.png': 
@@ -81,6 +170,11 @@ class FeaturedAnime(db.Model):
 
 
 def seed_featured_anime():
+    """
+    Seeds the FeaturedAnime table with the top 20 anime from the API.
+    This function must be run every time the database is wiped to reload and database for
+    anime data to be displayed.
+    """
     featured_count = FeaturedAnime.query.count()
     if featured_count >= 20:
         return
@@ -279,32 +373,39 @@ def search(query=None):
 @app.route('/anime/<path:title>/<int:id>/', methods= ['GET', 'POST'])
 def anime(title, id):
 
+    search_results = api.search_anime_by_id(id)
+    anime_info = search_results['data'] if search_results and 'data' in search_results else None
+
     if request.method == 'POST':
         if current_user.is_authenticated:
             if request.form.get('logout'):
                 logout_user()
                 return redirect(url_for('anime', title=title, id=id))
             
-            if request.form.get('bookmark_action'):
+            if request.form.get('bookmark_action') == 'remove':
+                current_user.remove_bookmark(id)
+                return redirect(url_for('anime', title=title, id=id))
 
-                if request.form.get('bookmark_action') == 'remove':
-                    current_user.remove_bookmark(id)
-                    return redirect(url_for('anime', title=title, id=id))
-                
-                elif request.form.get('bookmark_action') == 'add':
-                    current_user.add_bookmark(id)
-                    return redirect(url_for('anime', title=title, id=id))
+            if request.form.get('bookmark_status'):
+                current_user.set_bookmark_status(id, request.form.get('bookmark_status'))
+                return redirect(url_for('anime', title=title, id=id))
 
-    is_bookmarked = id in current_user.bookmarks if current_user.is_authenticated else False
+            if request.form.get('bookmark_action') == 'add':
+                default_bookmark_status = 'Waiting to Air' if anime_info and anime_info.get('status') == 'Not yet aired' else 'Watching'
+                current_user.add_bookmark_with_status(id, default_bookmark_status)
+                return redirect(url_for('anime', title=title, id=id))
+
+    current_bookmark = current_user.get_bookmark_entry(id) if current_user.is_authenticated else None
+    is_bookmarked = current_bookmark is not None
     authenticated = current_user.is_authenticated
-    search_results = api.search_anime_by_id(id)
-    anime_info = search_results['data'] if search_results and 'data' in search_results else None
+    current_bookmark_status = current_bookmark['status'] if current_bookmark else None
 
     return render_template(
         'anime.html',
         anime_info=anime_info,
         authenticated=authenticated,
         is_bookmarked=is_bookmarked,
+        current_bookmark_status=current_bookmark_status,
         requested_title=title,
         requested_id=id,
     )
@@ -314,11 +415,14 @@ def anime(title, id):
 def bookmarks():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
+    current_user.normalize_bookmarks()
     anime_list = []
-    for anime_id in current_user.bookmarks:
-        anime_data = api.search_anime_by_id(anime_id)
+    for bookmark in current_user.bookmarks:
+        anime_data = api.search_anime_by_id(bookmark['anime_id'])
         if anime_data and 'data' in anime_data:
-            anime_list.append(anime_data['data'])
+            bookmarked_anime = anime_data['data'].copy()
+            bookmarked_anime['bookmark_status'] = bookmark['status']
+            anime_list.append(bookmarked_anime)
     return render_template('bookmarks.html', anime_list=anime_list)
 
 @app.route('/upload',  methods=['POST'])

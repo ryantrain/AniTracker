@@ -12,4 +12,6 @@ After setting up the environment, install all the libraries required in requirem
 
 To run the website, type in "flask --app main run". The site will open [here](http://127.0.0.1:5000). You should open it on your browser for the best experience.
 
+Import note: if you want to clear the database, simply type in db.drop_all() under with "app.app_context()" in main.py. You must also write seed_featured_anime(), as db.drop_all() will also clear the homepage's information. seed_featured_anime() MUST be ran every time the database is cleared to load the cache. Without it, no pictures will show on the home screen, apart from the screen.
+
 If there are any bugs, please feel free to write them in the issues section!. There is no guaranteed that I will get to them though. Thank you for using ANITRACKER!
