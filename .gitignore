@@ -1,1 +1,2 @@
-instance/*
+instance/users.db
+*.db
