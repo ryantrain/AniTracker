@@ -40,3 +40,9 @@ def search_anime_by_id(id: int, retries: int = 3, retry_delay: float = 1.0):
             time.sleep(retry_delay)
 
     return None
+
+def get_top_anime():
+    response = requests.get("https://api.jikan.moe/v4/top/anime")
+    data = response.json()
+    if response.status_code == 200 and 'data' in data:
+        return data

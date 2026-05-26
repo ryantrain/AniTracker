@@ -7,16 +7,10 @@ ALL information will be cleared upon site shutdown (minus possibly user informat
         - Change name
         - Change password
         - Set profile pictures with flask (maybe but lazy)
-- Create users (stores users and passwords)
-    - Change icons and behaviourability when not logged in
-- Improve the home page (show first x animes in a repeated cycle, from left to right)
 - Add a search history clear button (localStorage.clear())
 - Add icons for search bar (magnifying glass) and a history symbol beside every search bar item (history symbol)
 - Allow option for users to insert their own profile pictures
 - Temporarily cache main menu pictures to allow for faster loading
-- Add more to profile page
-    - Messages (?)
-    - Bio (this at least)
 - Make interactive buttons at the bottom of the search bar (Previous 1 2 3 ... Last Next)
 - Add some text to the homepage
 

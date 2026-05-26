@@ -368,7 +368,6 @@ body.profile-active .search-bar, .search-bar-dropdown {
 body{
     background-color: black;
     background-size: cover;
-    text-align: center;
     scrollbar-width:thin;
 }
 
@@ -482,4 +481,208 @@ footer{
     border-color: white;
     border-width: 2px;
     transform: scale(1.01);
+}
+
+.bio-container {
+    position: relative;
+    top: 8vh;
+    left: 22vw;
+    width: 60vw;
+    max-width: 600px;
+    background-color: rgba(24, 24, 26, 0.8);
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    text-align: left;
+    
+}
+
+.bio-label {
+    font-size: 24px;
+    font-family: 'poppins';
+}
+
+.bio-content {
+    margin-top: 8px;
+    font-size: 16px;
+    font-family: 'poppins';
+}
+
+.edit-profile-container {
+    position: fixed;
+    right: 20vw;
+    top: 33vh;
+    width: 24vw;
+    height: 20vh;
+    display: grid;
+    grid-template-rows: auto;
+    row-gap: 24px;
+    grid-template-areas:
+        "username"
+        "password"
+        "bio"
+        "actions";
+    color: white;
+    font-family: 'poppins';
+}
+
+.edit-profile-container-username {
+    grid-area: username;
+    display: grid;
+    background-color: rgba(64, 64, 70, 0.8);
+    border-radius: 12px;
+    font-size: 18px;
+    padding: 0px 12px;
+    grid-template-areas:
+        "username message"
+        "input input";
+    grid-template-columns: auto;
+}
+
+.edit-profile-container-username-title {
+    padding: 8px 0;
+    grid-area: username;
+}
+
+.edit-profile-container-username-input {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 0px 12px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    margin-top: 8px;
+    transition: 0.1s ease;
+    border: 1px solid transparent;
+    width: 100%;
+    grid-area: input;
+}
+
+.success-message {
+    color: #4BB543;
+    font-size: 14px;
+    grid-area: message;
+    justify-self: center;
+    align-self: center;
+}
+
+.error-message {
+    color: #FF4B4B;
+    font-size: 14px;
+    grid-area: message;
+}
+
+.edit-profile-container-username-input:focus {
+    outline: none;
+    border-color: white;
+    border-width: 1px;
+    transition: border-color 0.2s ease;
+}
+
+.edit-profile-container-password {
+    grid-area: password;
+    display: grid;
+    background-color: rgba(64, 64, 70, 0.8);
+    border-radius: 12px;
+    padding: 0px 12px;
+
+}   
+
+.edit-profile-container-password-title-grid {
+    padding: 8px 0;
+    grid-template-areas: "title message";
+    display: grid;
+    grid-template-columns: auto;
+    gap: 12px;
+}
+
+.edit-profile-container-password-title {
+    grid-area: title;
+}
+
+.edit-profile-container-password-grid {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-areas: "input message";
+}
+
+.edit-profile-container-password-input {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 0px 12px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    margin-top: 8px;
+    transition: 0.1s ease;
+    border: 1px solid transparent;
+    width: 100%;
+    grid-area: input;
+}
+
+.edit-profile-container-password-input:focus {
+    outline: none;
+    border-color: white;
+    border-width: 1px;
+    transition: border-color 0.2s ease;
+}
+
+.edit-profile-container-bio {
+    grid-area: bio;
+    display: grid;
+    background-color: rgba(64, 64, 70, 0.8);
+    border-radius: 12px;
+    padding: 0px 12px;
+    grid-template-areas:
+        "title message"
+        "input input";
+}
+
+.edit-profile-container-bio-title {
+    padding: 8px 0;
+    grid-area: title;
+}
+
+.edit-profile-container-bio-input {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 0px 12px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    margin-top: 8px;
+    transition: 0.1s ease;
+    border: 1px solid transparent;
+    width: 100%;
+    grid-area: input;
+}
+
+.edit-profile-container-bio-input:focus {
+    outline: none;
+    border-color: white;
+    border-width: 1px;
+    transition: border-color 0.2s ease;
+}
+
+.edit-profile-container-actions {
+    grid-area: actions;
+    display: flex;
+    background-color: rgba(64, 64, 70, 0.8);
+    border-radius: 12px;
+    gap: 12px;
+    justify-content: center;
+    padding: 8px 12px;
+}
+
+.edit-profile-container-actions-button {
+    cursor: pointer;
+    border-radius: 16px;
+    background-color: rgb(125, 50, 22);
+    color: white;
+    padding: 8px;
+    transition: 0.2s ease;
+    border-width: 2px;
+    border-color: transparent;
+}
+
+.edit-profile-container-actions-button:hover {
+    border-color: white;
+    border-width: 2px;
 }

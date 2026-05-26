@@ -32,13 +32,15 @@ class User(UserMixin, db.Model):
     date_joined = db.Column(db.DateTime, default=datetime.now().date())
     profile_picture = db.Column(db.String(256), nullable=True, default='default-icon.png')
     bookmarks = db.Column(MutableList.as_mutable(db.JSON), nullable=False, default=list)
+    bio = db.Column(db.String(500), nullable=True, default='')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password, salt_length=32)
+        db.session.commit()
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
     def set_email(self, email):
         self.email = email if email else None
 
@@ -54,6 +56,58 @@ class User(UserMixin, db.Model):
         if anime_id in self.bookmarks:
             self.bookmarks.remove(anime_id)
             db.session.commit()
+    
+    def set_profile_picture(self, filename):
+        if self.profile_picture != 'default-icon.png': 
+                path = os.path.join(app.root_path, 'static', 'images', self.profile_picture)
+                os.remove(path)
+        self.profile_picture = filename
+        db.session.commit()
+
+    def set_username(self, username):
+        self.username = username
+        db.session.commit()
+
+    def set_bio(self, bio: str):
+        self.bio = bio
+        db.session.commit()
+
+
+class FeaturedAnime(db.Model):
+    mal_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    image_url = db.Column(db.String(512), nullable=False)
+    ranking = db.Column(db.Integer, nullable=True)
+
+
+def seed_featured_anime():
+    featured_count = FeaturedAnime.query.count()
+    if featured_count >= 20:
+        return
+
+    existing_ids = {anime.mal_id for anime in FeaturedAnime.query.all()}
+
+    for anime in api.get_top_anime().get('data', [])[:20]:
+        if anime['mal_id'] in existing_ids:
+            continue
+
+        anime_data = api.search_anime_by_id(anime['mal_id'])
+        if not anime_data or 'data' not in anime_data:
+            continue
+
+        data = anime_data['data']
+        image_url = data['images']['jpg']['large_image_url']
+
+        db.session.add(
+            FeaturedAnime(
+                mal_id=data['mal_id'],
+                title=data['title'],
+                image_url=image_url,
+                ranking=anime.get('rank')
+            )
+        )
+
+    db.session.commit()
 
 
 @login_manager.user_loader
@@ -83,7 +137,7 @@ def login():
         
         else:
             flash('Invalid username or password. Please try again.')
-            return redirect(url_for('login'))
+            return redirect(url_for('login', next=next_page))
 
     return render_template('login.html', next_page=next_page)
 
@@ -94,8 +148,12 @@ def home():
         if request.form.get('logout'):
             logout_user()
             return redirect(url_for('home'))
-        
-    anime_data = api.get_anime_list(1)
+
+    anime_data = FeaturedAnime.query.order_by(FeaturedAnime.ranking.asc(), FeaturedAnime.mal_id.asc()).limit(20).all()
+    if len(anime_data) != 20:
+        seed_featured_anime()
+        anime_data = FeaturedAnime.query.order_by(FeaturedAnime.ranking.asc(), FeaturedAnime.mal_id.asc()).limit(20).all()
+
     return render_template(
         'home.html',
         anime_list=anime_data,
@@ -143,6 +201,45 @@ def profile(username):
                 logout_user()
                 return redirect(url_for('profile', username=username))
             
+            if request.form.get('new_username'):
+                new_username = request.form.get('new_username')
+                if new_username and new_username != current_user.username:
+                    if User.query.filter_by(username=new_username).first():
+                        flash('Username already taken. Please choose a different one.', 'name-error-message')
+                    else:
+                        current_user.set_username(new_username)
+                        flash('Username updated successfully.', 'name-success-message')
+                        return redirect(url_for('profile', username=new_username))
+                else:
+                    flash('Please enter a valid username.', 'name-error-message')
+
+            if request.form.get('current_password'):
+                current_password = request.form.get('current_password')
+                new_password = request.form.get('new_password')
+                confirm_new_password = request.form.get('confirm_new_password')
+
+                if not current_user.check_password(current_password):
+                    flash('Current password is incorrect. Please try again.', 'password_wrong-error-message')
+
+                elif new_password == '':
+                    flash('New password cannot be empty. Please try again.', 'password_empty-error-message')
+                
+                elif new_password != confirm_new_password:
+                    flash('New passwords do not match. Please try again.', 'password_mismatch-error-message')
+                
+                else:
+                    current_user.set_password(new_password)
+                    flash('Password updated successfully.', 'password-success-message')
+                    return redirect(url_for('profile', username=username))
+            
+            if (request.form.get('new_password') or request.form.get('confirm_new_password')) and not request.form.get('current_password'):
+                flash('Please enter your current password to change your password.', 'password_current-error-message')
+            if request.form.get('new_bio'):
+                new_bio = request.form.get('new_bio')
+                current_user.set_bio(new_bio)
+                flash('Bio updated successfully.', 'bio-success-message')
+                return redirect(url_for('profile', username=username))
+
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('profile.html', user=user)
 
@@ -238,15 +335,19 @@ def upload():
             return redirect(url_for('profile', username=current_user.username))
         
         if file:
-            filename = f"{current_user.username}_{secure_filename(file.filename)}"
+            filename = f"{current_user.id}_{secure_filename(file.filename)}"
             file.save(f'static/images/{filename}')
-            if current_user.profile_picture != 'default-icon.png': 
-                path = os.path.join(app.root_path, 'static', 'images', current_user.profile_picture)
-                os.remove(path)
-            current_user.profile_picture = filename
-            db.session.commit()
+            current_user.set_profile_picture(filename)
             return redirect(url_for('profile', username=current_user.username))
+        
+@app.route('/update_bio', methods=['POST'])
+@login_required
+def update_bio():
+    if request.method == 'POST':
+        new_bio = request.form.get('bio', '')
+        current_user.bio = new_bio
+        db.session.commit()
+        return redirect(url_for('profile', username=current_user.username))
 
 with app.app_context():
     db.create_all()
-

@@ -99,6 +99,96 @@
     {% endif %}
     <a class="profile-name">{{ user.username }}</a>
 
+    <div class="bio-container">
+
+        <p class="bio-label">Bio</p>
+        <p class="bio-content">{{ user.bio }}</p>
+
+    </div>
+    
+    {% if current_user.is_authenticated and current_user.id == user.id %}
+
+        <form action="{{ url_for('profile', username=current_user.username) }}" method ='POST'>
+
+            <div class="edit-profile-container">
+
+                <div class="edit-profile-container-username">
+                    <a class="edit-profile-container-username-title">Change Username</a>
+                    {% for message in get_flashed_messages(category_filter=['name-error-message']) %}
+                        <p class="error-message">{{ message }}</p>
+                    {% endfor %}
+
+                    {% for message in get_flashed_messages(category_filter=['name-success-message']) %}
+                        <p class="success-message">{{ message }}</p>
+                    {% endfor %}
+
+                    <input type="text" name="new_username" placeholder="New Username*" class="edit-profile-container-username-input"/>
+                
+                </div>
+
+                <div class="edit-profile-container-password">
+                    <div class="edit-profile-container-password-title-grid">
+                        <a class="edit-profile-container-password-title">Change Password</a>
+                        
+                        {% for message in get_flashed_messages(category_filter=['password_current-error-message']) %}
+                            <p class="error-message">{{ message }}</p>
+                        {% endfor %}
+
+                        {% for message in get_flashed_messages(category_filter=['password-success-message']) %}
+                            <p class="success-message">{{ message }}</p>
+                        {% endfor %}
+
+                    </div>
+                    
+                    <div class="edit-profile-container-password-grid"> 
+
+                        <input type="password" name="current_password" placeholder="Current Password*" class="edit-profile-container-password-input"/>
+    
+                        {% for message in get_flashed_messages(category_filter=['password_wrong-error-message']) %}
+                            <p class="error-message">{{ message }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="edit-profile-container-password-grid">
+
+                        <input type="password" name="new_password" placeholder="New Password*" class="edit-profile-container-password-input"/>
+                        
+                        {% for message in get_flashed_messages(category_filter=['password_empty-error-message']) %}
+                            <p class="error-message">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="edit-profile-container-password-grid">
+
+                        <input type="password" name="confirm_new_password" placeholder="Confirm New Password*" class="edit-profile-container-password-input"/>
+                        
+                        {% for message in get_flashed_messages(category_filter=['password_mismatch-error-message']) %}
+                            <p class="error-message">{{ message }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <div class="edit-profile-container-bio">
+                    <a class="edit-profile-container-bio-title">Change Bio</a>
+
+                    {% for message in get_flashed_messages(category_filter=['bio-success-message']) %}
+                        <p class="success-message">{{ message }}</p>
+                    {% endfor %}
+
+                    <input type='text' name="new_bio" placeholder="New Bio*" class="edit-profile-container-bio-input"/>
+                </div>
+
+                <div class="edit-profile-container-actions">
+                    <button type="submit" class="edit-profile-container-actions-button">Save Changes</button>
+                    <button type="reset" class="edit-profile-container-actions-button">Cancel</button>
+                </div> 
+
+            </div>
+        </form>
+    {% endif %}
 </body>
 
 </html>

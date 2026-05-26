@@ -37,6 +37,7 @@
 
         {% if current_user.is_authenticated %}
             <a class="nav-item" href="{{ url_for('bookmarks') }}">Bookmarks</a>
+            <a class="nav-item" href="{{ url_for('profile', username=current_user.username) }}">Profile</a>
         {% endif %}
 
     </nav>
@@ -82,21 +83,27 @@
     </div>
     
     <div class="body-gradient">
-        <div class="anime-list">
-            {% for anime in anime_list %}
-            <div class="anime-card">
+        <div class="featured-slider">
+            <div class="featured-slider-header">
+                <p>Featured anime</p>
+            </div>
 
-                <div class="anime-thumbnail">
-                    <a href="{{ url_for('anime', title=anime['data']['title'].replace(' ', '-'), id=anime['data']['mal_id']) }}">
-                        <img src= "{{ anime['data']['images']['jpg']['image_url'] }}" alt="Anime Thumbnail" />
+            <div class="featured-slider-viewport" data-featured-slider>
+                <div class="featured-slider-track">
+                    {% for anime in anime_list %}
+                    <a class="featured-card" href="{{ url_for('anime', title=anime.title.replace(' ', '-'), id=anime.mal_id) }}">
+                        <div class="featured-card-image">
+                            <img src="{{ anime.image_url }}" alt="{{ anime.title }}" />
+                            <span class="featured-card-id">#{{ anime.ranking }}</span>
+                        </div>
+
+                        <div class="featured-card-meta">
+                            <span class="featured-card-title">{{ anime.title }}</span>
+                        </div>
                     </a>
-                </div>
-
-                <div class="anime-metadata">
-                    {{ anime['data']['title'] }}
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}    
         </div>
     </div>
     

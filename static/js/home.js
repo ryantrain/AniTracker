@@ -111,3 +111,103 @@ if (profileBackdrop) {
         body.classList.remove('profile-active');
     });
 }
+
+const featuredSliderViewport = document.querySelector('[data-featured-slider]');
+
+if (featuredSliderViewport && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const featuredSliderTrack = featuredSliderViewport.querySelector('.featured-slider-track');
+    const originalFeaturedCards = Array.from(featuredSliderTrack.querySelectorAll('.featured-card'));
+    let featuredCards = [];
+    let featuredSliderTimer = null;
+    let featuredSliderIndex = 0;
+    let isPaused = false;
+
+    let cachedOffsets = [];
+    const cacheVisibleCards = () => {
+        featuredSliderTrack.querySelectorAll('.featured-card[data-clone="true"]').forEach((card) => card.remove());
+
+        originalFeaturedCards.forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute('data-clone', 'true');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.setAttribute('tabindex', '-1');
+            featuredSliderTrack.appendChild(clone);
+        });
+
+        featuredCards = Array.from(featuredSliderTrack.querySelectorAll('.featured-card'));
+    };
+
+    const cacheOffsets = () => {
+        cachedOffsets = featuredCards.map(card => card.offsetLeft);
+    };
+
+    cacheVisibleCards();
+    cacheOffsets();
+
+    const getVisibleCardCount = () => {
+        const firstCard = originalFeaturedCards[0];
+        if (!firstCard || !featuredSliderTrack) return 1;
+        const gap = parseFloat(getComputedStyle(featuredSliderTrack).gap) || 0;
+        const step = firstCard.getBoundingClientRect().width + gap;
+        return Math.max(1, Math.floor((featuredSliderViewport.clientWidth + gap) / step));
+    };
+
+    const getLastStartIndex = () => Math.max(0, featuredCards.length - getVisibleCardCount());
+
+    const scrollToIndex = (index, behavior = 'smooth') => {
+        const left = cachedOffsets[index];
+        if (left == null) return;
+        featuredSliderViewport.scrollTo({ left, behavior });
+    };
+
+    const SLIDE_INTERVAL = 2000;
+
+    const schedule = (delay = SLIDE_INTERVAL) => {
+        clearTimeout(featuredSliderTimer);
+        featuredSliderTimer = setTimeout(tick, delay);
+    };
+
+    function tick() {
+        featuredSliderTimer = null;
+        if (isPaused) return;
+
+        const lastStartIndex = getLastStartIndex();
+
+        if (featuredSliderIndex >= lastStartIndex) {
+            featuredSliderIndex = 0;
+            scrollToIndex(0, 'auto');
+            schedule(SLIDE_INTERVAL);
+            return;
+        }
+
+        featuredSliderIndex += 1;
+        scrollToIndex(featuredSliderIndex, 'smooth');
+        schedule(SLIDE_INTERVAL);
+    }
+
+    const startFeaturedSlider = () => {
+        isPaused = false;
+        if (featuredCards.length <= 1) return;
+        if (featuredSliderTimer === null) schedule(SLIDE_INTERVAL);
+    };
+
+    const stopFeaturedSlider = () => {
+        isPaused = true;
+        clearTimeout(featuredSliderTimer);
+        featuredSliderTimer = null;
+    };
+
+    featuredSliderViewport.addEventListener('mouseenter', stopFeaturedSlider);
+    featuredSliderViewport.addEventListener('mouseleave', startFeaturedSlider);
+    featuredSliderViewport.addEventListener('focusin', stopFeaturedSlider);
+    featuredSliderViewport.addEventListener('focusout', startFeaturedSlider);
+
+    window.addEventListener('resize', () => {
+        cacheVisibleCards();
+        cacheOffsets();
+        featuredSliderIndex = Math.min(featuredSliderIndex, getLastStartIndex());
+        scrollToIndex(featuredSliderIndex, 'auto');
+    });
+
+    startFeaturedSlider();
+}

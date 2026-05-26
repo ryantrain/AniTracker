@@ -183,62 +183,15 @@
       max-width: 96rem;
     }
   }
-  .block {
-    display: block;
-  }
-  .flex {
-    display: flex;
-  }
   .hidden {
     display: none;
-  }
-  .table {
-    display: table;
-  }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .transform {
-    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .resize {
     resize: both;
   }
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
-  .border {
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-  }
-  .text-wrap {
-    text-wrap: wrap;
-  }
-  .underline {
-    text-decoration-line: underline;
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
   .blur {
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .filter {
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .backdrop-filter {
-    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-  }
-  .transition {
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 }
 @font-face {
@@ -608,53 +561,93 @@ p {
   width: 100%;
   min-height: 100vh;
 }
-.anime-list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
+.featured-slider {
+  width: 1572px;
+  margin: 0 auto;
   color: white;
-  position: relative;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(100% - 2rem, 1500px);
-  grid-auto-flow: row;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
 }
-.anime-card {
-  background-color: black;
+.featured-slider-header {
   display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: transform 0.2s ease;
-  cursor: pointer;
-  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0 0.25rem;
+  font-family: "poppins";
 }
-.anime-card:hover {
-  transform: translateY(-5px);
+.featured-slider-header p {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.featured-slider-header span {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.featured-slider-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 18px;
+  padding: 0.25rem 0;
+}
+.featured-slider-viewport::-webkit-scrollbar {
+  display: none;
+}
+.featured-slider-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+}
+.featured-card {
+  flex: 0 0 clamp(220px, 20vw, 300px);
+  scroll-snap-align: start;
   color: white;
-}
-.anime-thumbnail {
-  aspect-ratio: 45/64;
-  border-radius: 10px;
+  text-decoration: none;
+  background: rgba(24, 24, 26, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
   overflow: hidden;
-  width: 100%;
-  height: auto;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.anime-thumbnail img {
+.featured-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.featured-card-image {
+  position: relative;
+  aspect-ratio: 45 / 64;
+  overflow: hidden;
+  background: #111;
+}
+.featured-card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.anime-metadata {
-  padding: 5px;
+.featured-card-id {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.68);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(10px);
+}
+.featured-card-meta {
+  padding: 0.9rem 0.95rem 1rem;
   min-width: 0;
+}
+.featured-card-title {
+  display: block;
+  min-height: 2.5rem;
+  font-family: "poppins";
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
   overflow-wrap: anywhere;
-  color: white;
 }
 footer {
   margin-top: auto;
@@ -687,36 +680,6 @@ footer {
   border-color: white;
   border-width: 2px;
   transform: scale(1.01);
-}
-@property --tw-rotate-x {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-rotate-y {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-rotate-z {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-skew-x {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-skew-y {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-border-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
 }
 @property --tw-blur {
   syntax: "*";
@@ -771,52 +734,9 @@ footer {
   syntax: "*";
   inherits: false;
 }
-@property --tw-backdrop-blur {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-brightness {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-contrast {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-grayscale {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-hue-rotate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-invert {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-opacity {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-saturate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-sepia {
-  syntax: "*";
-  inherits: false;
-}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
-      --tw-rotate-x: initial;
-      --tw-rotate-y: initial;
-      --tw-rotate-z: initial;
-      --tw-skew-x: initial;
-      --tw-skew-y: initial;
-      --tw-border-style: solid;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -830,15 +750,6 @@ footer {
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-backdrop-blur: initial;
-      --tw-backdrop-brightness: initial;
-      --tw-backdrop-contrast: initial;
-      --tw-backdrop-grayscale: initial;
-      --tw-backdrop-hue-rotate: initial;
-      --tw-backdrop-invert: initial;
-      --tw-backdrop-opacity: initial;
-      --tw-backdrop-saturate: initial;
-      --tw-backdrop-sepia: initial;
     }
   }
 }
