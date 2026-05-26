@@ -155,7 +155,7 @@ if (featuredSliderViewport && !window.matchMedia('(prefers-reduced-motion: reduc
     const getLastStartIndex = () => Math.max(0, featuredCards.length - getVisibleCardCount());
 
     const scrollToIndex = (index, behavior = 'smooth') => {
-        const left = cachedOffsets[index];
+        const left = cachedOffsets[index] - cachedOffsets[0]; // normalise against first card
         if (left == null) return;
         featuredSliderViewport.scrollTo({ left, behavior });
     };
