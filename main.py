@@ -12,13 +12,16 @@ import os
 
 app = Flask(__name__, instance_path='/tmp/instance')
 app.config['SECRET_KEY'] = secrets.token_hex(32)  # Generate a random secret key for session management
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or (
+    'sqlite:////tmp/anitracker.db' if os.environ.get('VERCEL') else 'sqlite:///instance/users.db'
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DIR': 'cache'})
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 
 ALLOWED_BOOKMARK_STATUSES = ('Watching', 'Completed', 'Dropped', 'Waiting to Air')
 
