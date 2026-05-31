@@ -14,13 +14,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push to Vercel repo
-        run: |
-          git remote add vercel-repo https://x-access-token:${{ secrets.VERCEL_REPO_TOKEN }}@github.com/ryantrain/anisomething.git
-          git push vercel-repo HEAD:main --force
-
       - name: Test token auth
         run: |
           curl -s -o /dev/null -w "%{http_code}" \
             -H "Authorization: token ${{ secrets.VERCEL_REPO_TOKEN }}" \
             https://api.github.com/repos/ryantrain/anisomething
+            
+      - name: Push to Vercel repo
+        run: |
+          git remote add vercel-repo https://x-access-token:${{ secrets.VERCEL_REPO_TOKEN }}@github.com/ryantrain/anisomething.git
+          git push vercel-repo HEAD:main --force
+
+      
