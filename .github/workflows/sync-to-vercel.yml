@@ -1,0 +1,20 @@
+name: Sync to Vercel repo
+
+on:
+  push:
+    branches:
+      - main  # change this if your branch is named differently
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Vercel repo
+        run: |
+          git remote add vercel-repo https://x-access-token:${{ secrets.VERCEL_REPO_TOKEN }}@github.com/ryantrain/anisomething.git
+          git push vercel-repo HEAD:main --force

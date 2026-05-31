@@ -10,10 +10,14 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 
-app = Flask(__name__, instance_path='/tmp/instance')
+app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')
+os.makedirs(INSTANCE_DIR, exist_ok=True)
+
 app.config['SECRET_KEY'] = secrets.token_hex(32)  # Generate a random secret key for session management
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or (
-    'sqlite:////tmp/anitracker.db' if os.environ.get('VERCEL') else 'sqlite:///instance/users.db'
+    'sqlite:////tmp/anitracker.db' if os.environ.get('VERCEL') else f"sqlite:///{os.path.join(INSTANCE_DIR, 'users.db').replace('\\', '/')}"
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
