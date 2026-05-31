@@ -10,9 +10,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, instance_path='/tmp/instance')
 app.config['SECRET_KEY'] = secrets.token_hex(32)  # Generate a random secret key for session management
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.login_view = 'login'
