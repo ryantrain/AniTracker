@@ -22,7 +22,7 @@ jobs:
             
       - name: Push to Vercel repo
         run: |
-          git remote add vercel-repo https://x-access-token:${{ secrets.VERCEL_REPO_TOKEN }}@github.com/ryantrain/anisomething.git
+          git remote add vercel-repo https://ryantrain:${{ secrets.VERCEL_REPO_TOKEN }}@github.com/ryantrain/anisomething.git
           git push vercel-repo HEAD:main --force
 
       
